@@ -80,7 +80,11 @@ int main()
 }
 ```
 
-# TODO - Memory model
+One of the primary differences between CPU and GPU programming is the memory model. A CPU shares physical RAM with all other processes running on the computer, and shares RAM between threads within a single program. Most operating systems also provide mechanisms for sharing memory between processes.
+
+A GPU has memory that is physically separate from the rest of the system RAM. Data connot be shared in the traditional way. We actually have to copy data to the GPU, operate on it, and then copy results back to the host RAM. The term **device RAM** is used to refer to memory and the GPU and **host RAM** refers to the native RAM on the device that is directly accessible to the CPU.
+
+Since CUDA 6.0, NVIDIA has provided a Unified Memory model that allows a single block of RAM to be shared between the host and device. This model handles the complexity of transferring data between GPU and CPU RAM and allows for a single logically shared address space to be used. This greatly simplifies programming and make it much simpler to port code between CUDA environments and non-CUDA environments.
 
 References
 ==========
