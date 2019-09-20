@@ -18,14 +18,69 @@ The desire to improve physics simulations in games [3], and use GPUs for machine
 Importance of GPU Programming
 =============================
 
-- Fast in certain cases
-- CPU performance stagnant
+GPU programming has become critical in certain industries. Any application which can execute a large number of calculations in paralell will likely see significantly improved performance when executed on a GPU [4]. Problems such as physics simulations, finite element modelling, machine learning, video encoding, and other all benefit dramactically from the sort of paralellism available on a modern GPU.
+
+Single-threaded performance is still very important for common computing tasks. Many daily tasks can't be easily paralellized, or it would significantly more complicated to do so. For this reason, the CPUs in modern devices have found a balance that tries to maximize single-threaded efficiency while also providing additional cores, SIMD instructions, and multiple threads per core for workloads that can be run in paralell.
+
+Unfortunately, we are hitting many challenges in improving single threaded performance. Increasing CPU clocks requires additional power. This power is expressed as heat and must be disippated in order to avoid damaging the CPU. This places a hard limit on how fast our chips can run. In addition, it is becoming more difficult to string transistors, thus placing constraints on the level of advanced designs that we can implement in silicon. In short, we are at the stage of diminishing returns on single-threaded CPU performance [5].
+
+GPUs are not constrained by a need to maximize single threaded performance. They often run their cores at signifcantly reduced clock compared CPUs, which allows them to use less energy, produce less heat, and generally be packed much more tightly onto a die.
+
+This has made GPUs the best option for vector processing in modern computer architectures. If we want to have access to these best-in-class vector processors, we must be able to write programs that can execute on them.
+
+While GPUs have historically been associated nearly exclusively with gaming, this is no longer the case. A modern workstation now likely contains a strong GPU that can be used for simulation or machine learning tasks in additional to actually rendering 3D graphics of various kinds.
 
 GPU Progamming Hardware Support
 ===============================
 
-CUDA Programming (or maybe OpenCL or OpenACC)
+Over the years, GPUs have provided various levels of programming support. In the early days, it was only possible to use GPUs for graphics applications. Over time, more and more tools have been provided for developers to use GPUs for general purpose computing.
+
+CUDA
+----
+
+CUDA is a programming framework developed by NVIDIA specifically for NVIDIA CPUs [6]. According to NVIDIA, this was the first toolkit available for general purpose computing on GPUs.
+
+Broadly speaking, CUDA provides programmers with tools to execute functions over vectors in their codebases using the GPU. This model is very flexible, as it means any array of numbers that the programmer can create can be quickly evaluated in paralell using the GPU.
+
+OpenCL
+------
+
+Like CUDA, OpenCL provides a way for developers to access the GPU from their programming environment [8]. OpenCL is distinctive for being cross-platform (it can be run on a number of different GPUs) as well as being free and open source software.
+
+OpenACC
+-------
+
+Like OpenCL, OpenACC strives to provide a paralell programming environment across devices [9]. OpenACC achieves this by providing a higher-level interface that can be compiled down to one of several different target environments (CUDA, OpenCL, etc).
+
+CUDA Programming
 ================
+
+Programming in CUDA is based around the conept of kernels [7]. Kernels are specialized C functions that can be executed in paralell in CUDA threads.
+
+Kernels will take as parameters pointers to arrays of values to be operated upon. The kernels will have access to the built-in threadIdx variable that allows the running kernel to identify the appropriate value in the array to operate upon. The threadIdx variable provides 3 components that can be used to iterate over one, two, and three dimensional data. Here's is an example from the documentation [7]:
+
+```c
+// Kernel definition
+__global__ void MatAdd(float A[N][N], float B[N][N],
+                       float C[N][N])
+{
+    int i = threadIdx.x;
+    int j = threadIdx.y;
+    C[i][j] = A[i][j] + B[i][j];
+}
+
+int main()
+{
+    ...
+    // Kernel invocation with one block of N * N * 1 threads
+    int numBlocks = 1;
+    dim3 threadsPerBlock(N, N);
+    MatAdd<<<numBlocks, threadsPerBlock>>>(A, B, C);
+    ...
+}
+```
+
+# TODO - Memory model
 
 References
 ==========
@@ -35,3 +90,15 @@ References
 2. Marroquim, Ricardo, and André Maximo. "Introduction to GPU Programming with GLSL." In 2009 Tutorials of the XXII Brazilian Symposium on Computer Graphics and Image Processing, pp. 3-16. IEEE, 2009.
 
 3. Wittenbrink, Craig M., Emmett Kilgariff, and Arjun Prabhu. "Fermi GF100 GPU architecture." IEEE Micro 31, no. 2 (2011): 50-59.
+
+4. Che, Shuai, Michael Boyer, Jiayuan Meng, David Tarjan, Jeremy W. Sheaffer, and Kevin Skadron. "A performance study of general-purpose applications on graphics processors using CUDA." Journal of parallel and distributed computing 68, no. 10 (2008): 1370-1380.
+
+5. Theis, Thomas N., and H-S. Philip Wong. "The end of moore's law: A new beginning for information technology." Computing in Science & Engineering 19, no. 2 (2017): 41.
+
+6. “CUDA Zone.” NVIDIA Developer, September 12, 2019. https://developer.nvidia.com/cuda-zone. 
+
+7. “CUDA C Programming Guide.” NVIDIA Developer Documentation. Accessed September 20, 2019. https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html. 
+
+8. “OpenCL - The Open Standard for Parallel Programming of Heterogeneous Systems.” The Khronos Group, July 21, 2013. https://www.khronos.org/opencl/
+
+9. “About OpenACC.” Open ACC. Accessed September 20, 2019. https://www.openacc.org/about. 
