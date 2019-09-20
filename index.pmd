@@ -5,11 +5,33 @@
 What is GPU Programming
 =======================
 
+GPU programming involves writes software that is executed at least in part on the systems Graphics Processing Unit, or GPU.
+
+Traditionally, GPU programming involved interfacing with various stages of the graphic processing pipeline [1]. This could be as basic as passing polygons to the GPU to be rendered using a set of parameters, but as GPUs evolved to be more powerful, programmers were given more tools to interface with the graphics pipeline [2].
+
+Over time, programmers were given the ability execute small programs at various points in the graphics pipeline. These programs are referred to as shaders. Different shaders could interact with the graphics pipeline at various stages. The types of shaders available include vertex shaders, fragment shaders, geometry shaders, and tesselation shaders.
+
+Computer graphics as implemented by traditional GPUs is an embarassingly parallel algorithm. Vertexes, polygons, and individual pixels (fragments) can each be processed independently. Therefore, much of the rendering speed of a modern GPU is based on the number of paralell cores that it possesses. Many modern GPUs have thousands of cores allowing them to work on thousands of floating point operations simultaneously.
+
+The desire to improve physics simulations in games [3], and use GPUs for machine learning and other FP intensive tasks led to the GPU opening up as a more general purpose computing device. Drivers and graphics cards now usually provide the ability to run general purpose code on the GPU. This is the core of modern GPU programming.
+
 Importance of GPU Programming
 =============================
+
+- Fast in certain cases
+- CPU performance stagnant
 
 GPU Progamming Hardware Support
 ===============================
 
 CUDA Programming (or maybe OpenCL or OpenACC)
 ================
+
+References
+==========
+
+1. Shreiner, Dave, Tom Davis, Mason Woo, and Jackie Neider. "OpenGL Programming Guide: The Official Guide to Learning OpenGL, Version 2.1." (2008).
+
+2. Marroquim, Ricardo, and André Maximo. "Introduction to GPU Programming with GLSL." In 2009 Tutorials of the XXII Brazilian Symposium on Computer Graphics and Image Processing, pp. 3-16. IEEE, 2009.
+
+3. Wittenbrink, Craig M., Emmett Kilgariff, and Arjun Prabhu. "Fermi GF100 GPU architecture." IEEE Micro 31, no. 2 (2011): 50-59.
