@@ -5,24 +5,24 @@
 What is GPU Programming
 =======================
 
-GPU programming involves writes software that is executed at least in part on the systems Graphics Processing Unit, or GPU.
+GPU programming involves writing software that is executed at least in part on the system's Graphics Processing Unit, or GPU.
 
 Traditionally, GPU programming involved interfacing with various stages of the graphic processing pipeline [1]. This could be as basic as passing polygons to the GPU to be rendered using a set of parameters, but as GPUs evolved to be more powerful, programmers were given more tools to interface with the graphics pipeline [2].
 
 Over time, programmers were given the ability execute small programs at various points in the graphics pipeline. These programs are referred to as shaders. Different shaders could interact with the graphics pipeline at various stages. The types of shaders available include vertex shaders, fragment shaders, geometry shaders, and tesselation shaders.
 
-Computer graphics as implemented by traditional GPUs is an embarassingly parallel algorithm. Vertexes, polygons, and individual pixels (fragments) can each be processed independently. Therefore, much of the rendering speed of a modern GPU is based on the number of paralell cores that it possesses. Many modern GPUs have thousands of cores allowing them to work on thousands of floating point operations simultaneously.
+Computer 3D graphics as implemented by traditional GPUs is an embarassingly parallel algorithm. Vertexes, polygons, and individual pixels (fragments) can generally be processed independently. Therefore, much of the rendering speed of a modern GPU is based on the number of paralell cores that it possesses. Many modern GPUs have thousands of cores allowing them to work on thousands of floating point operations simultaneously.
 
-The desire to improve physics simulations in games [3], and use GPUs for machine learning and other FP intensive tasks led to the GPU opening up as a more general purpose computing device. Drivers and graphics cards now usually provide the ability to run general purpose code on the GPU. This is the core of modern GPU programming.
+The desire to improve physics simulations in games [3], and use of GPUs for machine learning and other FP-intensive tasks led to the GPU opening up as a more general purpose computing device. Drivers and graphics cards now usually provide the ability to run general purpose code on the GPU. This is the core of modern GPU programming.
 
 Importance of GPU Programming
 =============================
 
-GPU programming has become critical in certain industries. Any application which can execute a large number of calculations in paralell will likely see significantly improved performance when executed on a GPU [4]. Problems such as physics simulations, finite element modelling, machine learning, video encoding, and other all benefit dramactically from the sort of paralellism available on a modern GPU.
+GPU programming has become critical in certain industries. Any application which can execute a large number of calculations in paralell will likely see significantly improved performance when executed on a GPU [4]. Problems such as physics simulations, finite element modelling, machine learning, video encoding, and many others all benefit dramactically from the sort of paralellism available on a modern GPU.
 
 Single-threaded performance is still very important for common computing tasks. Many daily tasks can't be easily paralellized, or it would significantly more complicated to do so. For this reason, the CPUs in modern devices have found a balance that tries to maximize single-threaded efficiency while also providing additional cores, SIMD instructions, and multiple threads per core for workloads that can be run in paralell.
 
-Unfortunately, we are hitting many challenges in improving single threaded performance. Increasing CPU clocks requires additional power. This power is expressed as heat and must be disippated in order to avoid damaging the CPU. This places a hard limit on how fast our chips can run. In addition, it is becoming more difficult to string transistors, thus placing constraints on the level of advanced designs that we can implement in silicon. In short, we are at the stage of diminishing returns on single-threaded CPU performance [5].
+Unfortunately, we are hitting many challenges in improving single threaded performance. Increasing CPU clocks requires additional power. This power is expressed as heat and must be disippated in order to avoid damaging the CPU. This places a hard limit on how fast our chips can run. In addition, it is becoming more difficult to shrink transistors, thus placing constraints on the level of advanced designs that we can implement in silicon. In short, we are at the stage of diminishing returns on single-threaded CPU performance [5].
 
 GPUs are not constrained by a need to maximize single threaded performance. They often run their cores at signifcantly reduced clock compared CPUs, which allows them to use less energy, produce less heat, and generally be packed much more tightly onto a die.
 
