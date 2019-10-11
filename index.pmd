@@ -19,6 +19,8 @@ Here's an example of the a modern unified graphics and computing architecture fo
 
 ![GeForce 8800 [10]](media/8800.png)
 
+We can see here that a modern GPU is organized as a hierarchy of computer units and associated RAM. We see that there are Texture Processing Clusters (TPCs) that manage a number of Stream Multiprocessors (SM) that in turn manage a number of Streaming Processors (SPs). This massively paralell architecture allows modern GPUs to performs hundreds or thousands of GFLOPS, despite being generally clocked a bit lower than the main CPU.
+
 Importance of GPU Programming
 =============================
 
