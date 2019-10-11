@@ -15,6 +15,10 @@ Computer 3D graphics as implemented by traditional GPUs is an embarassingly para
 
 The desire to improve physics simulations in games [3], and use of GPUs for machine learning and other FP-intensive tasks led to the GPU opening up as a more general purpose computing device. Drivers and graphics cards now usually provide the ability to run general purpose code on the GPU. This is the core of modern GPU programming.
 
+Here's an example of the a modern unified graphics and computing architecture found in the NVIDIA GeForce 8800:
+
+![GeForce 8800 [10]](media/8800.png)
+
 Importance of GPU Programming
 =============================
 
@@ -106,3 +110,5 @@ References
 8. “OpenCL - The Open Standard for Parallel Programming of Heterogeneous Systems.” The Khronos Group, July 21, 2013. https://www.khronos.org/opencl/
 
 9. “About OpenACC.” Open ACC. Accessed September 20, 2019. https://www.openacc.org/about. 
+
+10. Nickolls, John, and David Kirk. "Graphics and computing GPUs." Computer Organization and Design: The Hardware/Software Interface, DA Patterson and JL Hennessy, 4th ed., Morgan Kaufmann (2009): A2-A77.
