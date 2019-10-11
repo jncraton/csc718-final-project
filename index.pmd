@@ -9,9 +9,9 @@ GPU programming involves writing software that is executed at least in part on t
 
 Traditionally, GPU programming involved interfacing with various stages of the graphic processing pipeline [1]. This could be as basic as passing polygons to the GPU to be rendered using a set of parameters, but as GPUs evolved to be more powerful, programmers were given more tools to interface with the graphics pipeline [2].
 
-Over time, programmers were given the ability execute small programs at various points in the graphics pipeline. These programs are referred to as shaders. Different shaders could interact with the graphics pipeline at various stages. The types of shaders available include vertex shaders, fragment shaders, geometry shaders, and tesselation shaders.
+Over time, programmers were given the ability execute small programs at various points in the graphics pipeline. These programs are referred to as shaders. Different shaders could interact with the graphics pipeline at various stages. The types of shaders available include vertex shaders, fragment shaders, geometry shaders, and tessellation shaders.
 
-Computer 3D graphics as implemented by traditional GPUs is an embarassingly parallel algorithm. Vertexes, polygons, and individual pixels (fragments) can generally be processed independently. Therefore, much of the rendering speed of a modern GPU is based on the number of paralell cores that it possesses. Many modern GPUs have thousands of cores allowing them to work on thousands of floating point operations simultaneously.
+Computer 3D graphics as implemented by traditional GPUs is an embarrassingly parallel algorithm. Vertexes, polygons, and individual pixels (fragments) can generally be processed independently. Therefore, much of the rendering speed of a modern GPU is based on the number of parallel cores that it possesses. Many modern GPUs have thousands of cores allowing them to work on thousands of floating point operations simultaneously.
 
 The desire to improve physics simulations in games [3], and use of GPUs for machine learning and other FP-intensive tasks led to the GPU opening up as a more general purpose computing device. Drivers and graphics cards now usually provide the ability to run general purpose code on the GPU. This is the core of modern GPU programming.
 
@@ -19,24 +19,24 @@ Here's an example of the a modern unified graphics and computing architecture fo
 
 ![GeForce 8800 [10]](media/8800.png)
 
-We can see here that a modern GPU is organized as a hierarchy of computer units and associated RAM. We see that there are Texture Processing Clusters (TPCs) that manage a number of Stream Multiprocessors (SM) that in turn manage a number of Streaming Processors (SPs). This massively paralell architecture allows modern GPUs to performs hundreds or thousands of GFLOPS, despite being generally clocked a bit lower than the main CPU.
+We can see here that a modern GPU is organized as a hierarchy of computer units and associated RAM. We see that there are Texture Processing Clusters (TPCs) that manage a number of Stream Multiprocessors (SM) that in turn manage a number of Streaming Processors (SPs). This massively parallel architecture allows modern GPUs to performs hundreds or thousands of GFLOPS, despite being generally clocked a bit lower than the main CPU.
 
 Importance of GPU Programming
 =============================
 
-GPU programming has become critical in certain industries. Any application which can execute a large number of calculations in paralell will likely see significantly improved performance when executed on a GPU [4]. Problems such as physics simulations, finite element modelling, machine learning, video encoding, and many others all benefit dramactically from the sort of paralellism available on a modern GPU.
+GPU programming has become critical in certain industries. Any application which can execute a large number of calculations in parallel will likely see significantly improved performance when executed on a GPU [4]. Problems such as physics simulations, finite element modeling, machine learning, video encoding, and many others all benefit dramatically from the sort of parallelism available on a modern GPU.
 
-Single-threaded performance is still very important for common computing tasks. Many daily tasks can't be easily paralellized, or it would significantly more complicated to do so. For this reason, the CPUs in modern devices have found a balance that tries to maximize single-threaded efficiency while also providing additional cores, SIMD instructions, and multiple threads per core for workloads that can be run in paralell.
+Single-threaded performance is still very important for common computing tasks. Many daily tasks can't be easily paralellized, or it would significantly more complicated to do so. For this reason, the CPUs in modern devices have found a balance that tries to maximize single-threaded efficiency while also providing additional cores, SIMD instructions, and multiple threads per core for workloads that can be run in parallel.
 
-Unfortunately, we are hitting many challenges in improving single threaded performance. Increasing CPU clocks requires additional power. This power is expressed as heat and must be disippated in order to avoid damaging the CPU. This places a hard limit on how fast our chips can run. In addition, it is becoming more difficult to shrink transistors, thus placing constraints on the level of advanced designs that we can implement in silicon. In short, we are at the stage of diminishing returns on single-threaded CPU performance [5].
+Unfortunately, we are hitting many challenges in improving single threaded performance. Increasing CPU clocks requires additional power. This power is expressed as heat and must be dissipated in order to avoid damaging the CPU. This places a hard limit on how fast our chips can run. In addition, it is becoming more difficult to shrink transistors, thus placing constraints on the level of advanced designs that we can implement in silicon. In short, we are at the stage of diminishing returns on single-threaded CPU performance [5].
 
-GPUs are not constrained by a need to maximize single threaded performance. They often run their cores at signifcantly reduced clock compared CPUs, which allows them to use less energy, produce less heat, and generally be packed much more tightly onto a die.
+GPUs are not constrained by a need to maximize single threaded performance. They often run their cores at significantly reduced clock compared CPUs, which allows them to use less energy, produce less heat, and generally be packed much more tightly onto a die.
 
 This has made GPUs the best option for vector processing in modern computer architectures. If we want to have access to these best-in-class vector processors, we must be able to write programs that can execute on them.
 
 While GPUs have historically been associated nearly exclusively with gaming, this is no longer the case. A modern workstation now likely contains a strong GPU that can be used for simulation or machine learning tasks in additional to actually rendering 3D graphics of various kinds.
 
-GPU Progamming Support and Frameworks
+GPU Programming Support and Frameworks
 =====================================
 
 Over the years, GPUs have provided various levels of programming support. In the early days, it was only possible to use GPUs for graphics applications. Over time, more and more tools have been provided for developers to use GPUs for general purpose computing.
@@ -46,7 +46,7 @@ CUDA
 
 CUDA is a programming framework developed by NVIDIA specifically for NVIDIA CPUs [6]. According to NVIDIA, this was the first toolkit available for general purpose computing on GPUs.
 
-Broadly speaking, CUDA provides programmers with tools to execute functions over vectors in their codebases using the GPU. This model is very flexible, as it means any array of numbers that the programmer can create can be quickly evaluated in paralell using the GPU.
+Broadly speaking, CUDA provides programmers with tools to execute functions over vectors in their codebases using the GPU. This model is very flexible, as it means any array of numbers that the programmer can create can be quickly evaluated in parallel using the GPU.
 
 OpenCL
 ------
@@ -56,12 +56,12 @@ Like CUDA, OpenCL provides a way for developers to access the GPU from their pro
 OpenACC
 -------
 
-Like OpenCL, OpenACC strives to provide a paralell programming environment across devices [9]. OpenACC achieves this by providing a higher-level interface that can be compiled down to one of several different target environments (CUDA, OpenCL, etc).
+Like OpenCL, OpenACC strives to provide a parallel programming environment across devices [9]. OpenACC achieves this by providing a higher-level interface that can be compiled down to one of several different target environments (CUDA, OpenCL, etc).
 
 CUDA Programming
 ================
 
-Programming in CUDA is based around the conept of kernels [7]. Kernels are specialized C functions that can be executed in paralell in CUDA threads.
+Programming in CUDA is based around the concept of kernels [7]. Kernels are specialized C functions that can be executed in parallel in CUDA threads.
 
 Kernels will take as parameters pointers to arrays of values to be operated upon. The kernels will have access to the built-in threadIdx variable that allows the running kernel to identify the appropriate value in the array to operate upon. The threadIdx variable provides 3 components that can be used to iterate over one, two, and three dimensional data. Here's is an example from the documentation [7]:
 
@@ -88,17 +88,17 @@ int main()
 
 One of the primary differences between CPU and GPU programming is the memory model. A CPU shares physical RAM with all other processes running on the computer, and shares RAM between threads within a single program. Most operating systems also provide mechanisms for sharing memory between processes.
 
-A GPU has memory that is physically separate from the rest of the system RAM. Data connot be shared in the traditional way. We actually have to copy data to the GPU, operate on it, and then copy results back to the host RAM. The term **device RAM** is used to refer to memory and the GPU and **host RAM** refers to the native RAM on the device that is directly accessible to the CPU.
+A GPU has memory that is physically separate from the rest of the system RAM. Data cannot be shared in the traditional way. We actually have to copy data to the GPU, operate on it, and then copy results back to the host RAM. The term **device RAM** is used to refer to memory and the GPU and **host RAM** refers to the native RAM on the device that is directly accessible to the CPU.
 
 Since CUDA 6.0, NVIDIA has provided a Unified Memory model that allows a single block of RAM to be shared between the host and device. This model handles the complexity of transferring data between GPU and CPU RAM and allows for a single logically shared address space to be used. This greatly simplifies programming and make it much simpler to port code between CUDA environments and non-CUDA environments.
 
 Project Part II
 ===============
 
-I have chosen to select a problem to explore various paralell programming approaches. I will likely experiment with an n-body physics simulation using the following techniques:
+I have chosen to select a problem to explore various parallel programming approaches. I will likely experiment with an n-body physics simulation using the following techniques:
 
 1. Sequential programming
-2. Paralell programming using OpenMP
+2. Parallel programming using OpenMP
 3. GPU programming likely using OpenCL or OpenACC
 
 I intend to complete this project without a group or partner.
