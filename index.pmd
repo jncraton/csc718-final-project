@@ -36,8 +36,8 @@ This has made GPUs the best option for vector processing in modern computer arch
 
 While GPUs have historically been associated nearly exclusively with gaming, this is no longer the case. A modern workstation now likely contains a strong GPU that can be used for simulation or machine learning tasks in additional to actually rendering 3D graphics of various kinds.
 
-GPU Progamming Hardware Support
-===============================
+GPU Progamming Support and Frameworks
+=====================================
 
 Over the years, GPUs have provided various levels of programming support. In the early days, it was only possible to use GPUs for graphics applications. Over time, more and more tools have been provided for developers to use GPUs for general purpose computing.
 
