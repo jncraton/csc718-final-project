@@ -36,7 +36,7 @@ $(SRC).pdf: $(SRC).md
 	pandoc --toc --variable documentclass=extarticle --variable fontsize=12pt --variable mainfont="FreeSans" --variable mathfont="FreeMono" --variable monofont="FreeMono" --variable monofontoptions="SizeFeatures={Size=8}" --include-in-head head.tex --no-highlight --mathjax --latex-engine=xelatex -s -o $@ $< 
 
 simple.pdf: index.md
-	pandoc --variable documentclass=extarticle --variable fontsize=12pt --variable mainfont="Times New Roman" --variable mathfont="Times New Roman" --variable monofont="Times New Roman" --variable monofontoptions="SizeFeatures={Size=12}" --include-in-head head.tex --no-highlight --mathjax --latex-engine=xelatex -s -o $@ $< 
+	pandoc --toc --variable documentclass=extarticle --variable fontsize=12pt --variable mainfont="Times New Roman" --variable mathfont="Times New Roman" --variable monofont="Times New Roman" --variable monofontoptions="SizeFeatures={Size=12}" --include-in-head head.tex --no-highlight --mathjax --latex-engine=xelatex -s -o $@ $< 
 
 run: $(SRC).py
 	python3 $(SRC).py
