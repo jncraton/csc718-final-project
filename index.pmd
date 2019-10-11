@@ -95,22 +95,22 @@ Since CUDA 6.0, NVIDIA has provided a Unified Memory model that allows a single 
 References
 ==========
 
-1. Shreiner, Dave, Tom Davis, Mason Woo, and Jackie Neider. "OpenGL Programming Guide: The Official Guide to Learning OpenGL, Version 2.1." (2008).
+[1] Shreiner, Dave, Tom Davis, Mason Woo, and Jackie Neider. "OpenGL Programming Guide: The Official Guide to Learning OpenGL, Version 2.1." (2008).
 
-2. Marroquim, Ricardo, and André Maximo. "Introduction to GPU Programming with GLSL." In 2009 Tutorials of the XXII Brazilian Symposium on Computer Graphics and Image Processing, pp. 3-16. IEEE, 2009.
+[2] Marroquim, Ricardo, and André Maximo. "Introduction to GPU Programming with GLSL." In 2009 Tutorials of the XXII Brazilian Symposium on Computer Graphics and Image Processing, pp. 3-16. IEEE, 2009.
 
-3. Wittenbrink, Craig M., Emmett Kilgariff, and Arjun Prabhu. "Fermi GF100 GPU architecture." IEEE Micro 31, no. 2 (2011): 50-59.
+[3] Wittenbrink, Craig M., Emmett Kilgariff, and Arjun Prabhu. "Fermi GF100 GPU architecture." IEEE Micro 31, no. 2 (2011): 50-59.
 
-4. Che, Shuai, Michael Boyer, Jiayuan Meng, David Tarjan, Jeremy W. Sheaffer, and Kevin Skadron. "A performance study of general-purpose applications on graphics processors using CUDA." Journal of parallel and distributed computing 68, no. 10 (2008): 1370-1380.
+[4] Che, Shuai, Michael Boyer, Jiayuan Meng, David Tarjan, Jeremy W. Sheaffer, and Kevin Skadron. "A performance study of general-purpose applications on graphics processors using CUDA." Journal of parallel and distributed computing 68, no. 10 (2008): 1370-1380.
 
-5. Theis, Thomas N., and H-S. Philip Wong. "The end of moore's law: A new beginning for information technology." Computing in Science & Engineering 19, no. 2 (2017): 41.
+[5] Theis, Thomas N., and H-S. Philip Wong. "The end of moore's law: A new beginning for information technology." Computing in Science & Engineering 19, no. 2 (2017): 41.
 
-6. “CUDA Zone.” NVIDIA Developer, September 12, 2019. https://developer.nvidia.com/cuda-zone. 
+[6] “CUDA Zone.” NVIDIA Developer, September 12, 2019. https://developer.nvidia.com/cuda-zone. 
 
-7. “CUDA C Programming Guide.” NVIDIA Developer Documentation. Accessed September 20, 2019. https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html. 
+[7] “CUDA C Programming Guide.” NVIDIA Developer Documentation. Accessed September 20, 2019. https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html. 
 
-8. “OpenCL - The Open Standard for Parallel Programming of Heterogeneous Systems.” The Khronos Group, July 21, 2013. https://www.khronos.org/opencl/
+[8] “OpenCL - The Open Standard for Parallel Programming of Heterogeneous Systems.” The Khronos Group, July 21, 2013. https://www.khronos.org/opencl/
 
-9. “About OpenACC.” Open ACC. Accessed September 20, 2019. https://www.openacc.org/about. 
+[9] “About OpenACC.” Open ACC. Accessed September 20, 2019. https://www.openacc.org/about. 
 
-10. Nickolls, John, and David Kirk. "Graphics and computing GPUs." Computer Organization and Design: The Hardware/Software Interface, DA Patterson and JL Hennessy, 4th ed., Morgan Kaufmann (2009): A2-A77.
+[10] Nickolls, John, and David Kirk. "Graphics and computing GPUs." Computer Organization and Design: The Hardware/Software Interface, DA Patterson and JL Hennessy, 4th ed., Morgan Kaufmann (2009): A2-A77.
