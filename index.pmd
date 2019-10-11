@@ -15,12 +15,6 @@ Computer 3D graphics as implemented by traditional GPUs is an embarrassingly par
 
 The desire to improve physics simulations in games [3], and use of GPUs for machine learning and other FP-intensive tasks led to the GPU opening up as a more general purpose computing device. Drivers and graphics cards now usually provide the ability to run general purpose code on the GPU. This is the core of modern GPU programming.
 
-Here's an example of the a modern unified graphics and computing architecture found in the NVIDIA GeForce 8800:
-
-![GeForce 8800 [10]](media/8800.png)
-
-We can see here that a modern GPU is organized as a hierarchy of computer units and associated RAM. We see that there are Texture Processing Clusters (TPCs) that manage a number of Stream Multiprocessors (SM) that in turn manage a number of Streaming Processors (SPs). This massively parallel architecture allows modern GPUs to performs hundreds or thousands of GFLOPS, despite being generally clocked a bit lower than the main CPU.
-
 Importance of GPU Programming
 =============================
 
@@ -40,6 +34,12 @@ GPU Programming Support and Frameworks
 =====================================
 
 Over the years, GPUs have provided various levels of programming support. In the early days, it was only possible to use GPUs for graphics applications. Over time, more and more tools have been provided for developers to use GPUs for general purpose computing.
+
+Here's an example of the a modern unified graphics and computing architecture found in the NVIDIA GeForce 8800:
+
+![GeForce 8800 [10]](media/8800.png)
+
+We can see here that a modern GPU is organized as a hierarchy of compute units and associated RAM. We see that there are Texture Processing Clusters (TPCs) that manage a number of Stream Multiprocessors (SM) that in turn manage a number of Streaming Processors (SPs). This massively parallel architecture allows modern GPUs to performs hundreds or thousands of GFLOPS, despite being generally clocked a bit lower than the main CPU.
 
 CUDA
 ----
