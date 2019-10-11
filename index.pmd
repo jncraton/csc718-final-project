@@ -92,6 +92,15 @@ A GPU has memory that is physically separate from the rest of the system RAM. Da
 
 Since CUDA 6.0, NVIDIA has provided a Unified Memory model that allows a single block of RAM to be shared between the host and device. This model handles the complexity of transferring data between GPU and CPU RAM and allows for a single logically shared address space to be used. This greatly simplifies programming and make it much simpler to port code between CUDA environments and non-CUDA environments.
 
+Project Part II
+===============
+
+I have chosen to select a problem to explore various paralell programming approaches. I will likely experiment with an n-body physics simulation using the following techniques:
+
+1. Sequential programming
+2. Paralell programming using OpenMP
+3. GPU programming likely using OpenCL or OpenACC
+
 References
 ==========
 
