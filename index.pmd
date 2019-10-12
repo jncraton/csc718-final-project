@@ -96,7 +96,7 @@ A GPU has memory that is physically separate from the rest of the system RAM. Da
 
 Since CUDA 6.0, NVIDIA has provided a Unified Memory model that allows a single block of RAM to be shared between the host and device. This model handles the complexity of transferring data between GPU and CPU RAM and allows for a single logically shared address space to be used. This greatly simplifies programming and make it much simpler to port code between CUDA environments and non-CUDA environments.
 
-Overall, CUDA programming provides an effective and relatively straigtforward way for programmers to write code that can execute in parallel on an NVIDIA GPU.
+This shared memory model is one of the significant advantages of CUDA programming. Its primary limitation is that it is only usable on NVIDIA GPUs, as it is a proprietary framework developed and provided by NVIDIA. Overall, CUDA programming provides an effective and relatively straigtforward way for programmers to write code that can execute in parallel on an NVIDIA GPU.
 
 Project Part II
 ===============
