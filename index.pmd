@@ -41,7 +41,7 @@ Here's an example of the a modern unified graphics and computing architecture fo
 
 We can see here that a modern GPU is organized as a hierarchy of compute units and associated RAM. We see that there are Texture Processing Clusters (TPCs) that manage a number of Stream Multiprocessors (SM) that in turn manage a number of Streaming Processors (SPs). This massively parallel architecture allows modern GPUs to performs hundreds or thousands of GFLOPS, despite being generally clocked a bit lower than the main CPU.
 
-Since the GeForce 8800 shown above is a little dated, I also wanted to explore how much performance has improved by comparing it against the GPU in my current workstation. The 8800 GT contains 112 Stream Processors, while the Quadro P3200 in the laptop on my desk at work contains 1,792 CUDA cores [11]. That's over a 10 fold increase in around a decade. The 8800 also tops out at 1GB of RAM, while my more modern GPU contains 6GB on board. Memory bandwidth also increased from 57 GB/s to 168 GB/s. While this is a great improvement, it's also worth noting that this is an apples to oranges comparison, as the 8800 GT was a desktop GPU with a TDP of 125W, while my P3200 is a mobile GPU with a TDP of 78W.
+Since the GeForce 8800 shown above is a little dated, I also wanted to explore how much performance has improved by comparing it against the GPU in my current workstation. The 8800 GT contains 112 Stream Processors, while the Quadro P3200 in the laptop on my desk at work contains 1,792 CUDA cores [11]. That's over a 10 fold increase in around a decade. The 8800 also tops out at 1GB of RAM, while my more modern GPU contains 6GB on board. Memory bandwidth also increased from 57 GB/s to 168 GB/s. While this is a great improvement, it's also worth noting that this is not an apples to apples comparison, as the 8800 GT was a desktop GPU with a TDP of 125W, while my P3200 is a mobile GPU with a TDP of 78W.
 
 As another point of reference, a modern GPGPU compute card, such as the NVIDIA V100, can max out at around 14 TFLOPS, while the 8800 GT could manage around 0.3 TFLOPS. Most high-end desktop CPUs can't sustain anything over 0.15 TFLOPS. By making use of modern GPGPU programming, we can see at least 2 orders of magnitude faster computational performance.
 
@@ -95,6 +95,8 @@ One of the primary differences between CPU and GPU programming is the memory mod
 A GPU has memory that is physically separate from the rest of the system RAM. Data cannot be shared in the traditional way. We actually have to copy data to the GPU, operate on it, and then copy results back to the host RAM. The term **device RAM** is used to refer to memory and the GPU and **host RAM** refers to the native RAM on the device that is directly accessible to the CPU.
 
 Since CUDA 6.0, NVIDIA has provided a Unified Memory model that allows a single block of RAM to be shared between the host and device. This model handles the complexity of transferring data between GPU and CPU RAM and allows for a single logically shared address space to be used. This greatly simplifies programming and make it much simpler to port code between CUDA environments and non-CUDA environments.
+
+Overall, CUDA programming provides an effective and relatively straigtforward way for programmers to write code that can execute in parallel on an NVIDIA GPU.
 
 Project Part II
 ===============
