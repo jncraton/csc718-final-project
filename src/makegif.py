@@ -6,7 +6,7 @@ import imageio
 import csv
 import os
 
-size = 100000
+size = 100000000
 
 frames = len(os.listdir('results'))
 

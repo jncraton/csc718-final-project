@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define N 1000
+#define N 100
 #define ITERATIONS 400
 
 const double G = 6.674E-11;
 const double STEP_SIZE = 100.0;
+const double earth_radius = 6.357E6;
+
 
 double *x, *y, *z, *dx, *dy, *dz, *m;
 
@@ -16,17 +18,20 @@ void update_velocity(double *pos, double *vel, double *mass) {
   //distance = sqrt(x^2 + y^2 + z^2)
   //r^2 = x^2 + y^2 + z^2
 
-  for (int i = 0; i < N; i++) {
+  for (int i = 1; i < N; i++) {
     for (int j = 0; j < N; j++) {
       if (i != j) {
-        vel[i] += G*mass[j]/(pos[j] - pos[i]);
+        double sep = pos[j] - pos[i];
+        if (sep > 1.0) {
+          vel[i] += G*mass[j]/(pos[j] - pos[i]);
+        }
       }
     }
   }
 }
 
 void update_position(double *pos, double *vel) {
-  for (int i = 0; i < N; i++) {
+  for (int i = 1; i < N; i++) {
     pos[i] += vel[i] * STEP_SIZE;
   }
 }
@@ -55,14 +60,15 @@ int main() {
   dy = aligned_alloc(64, N*sizeof(double));
   dz = aligned_alloc(64, N*sizeof(double));
 
-  for (int i = 0; i<N; i++) {
+  m[0] = 6E24;
+  for (int i = 1; i<N; i++) {
     m[i] = 10000 * (double)rand() / (double)(RAND_MAX);
-    dx[i] = (double)rand() / (double)(RAND_MAX);
-    dy[i] = (double)rand() / (double)(RAND_MAX);
-    dz[i] = (double)rand() / (double)(RAND_MAX);
-    x[i] = 10000.0 * dx[i];
-    y[i] = 10000.0 * dy[i];
-    z[i] = 10000.0 * dz[i];
+    dx[i] = 3000*(((double)rand() / (double)(RAND_MAX))-0.5);
+    dy[i] = 6000 + 3000*(((double)rand() / (double)(RAND_MAX))-0.5);
+    dz[i] = 3000*(((double)rand() / (double)(RAND_MAX))-0.5);
+    x[i] = earth_radius;
+    y[i] = 0;
+    z[i] = 0;
   }
 
   for (int i = 0; i <= ITERATIONS; i++) {
