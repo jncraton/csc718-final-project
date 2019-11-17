@@ -28,12 +28,11 @@ def plot(i):
 
     ax.quiver(v[0],v[1],v[2],v[3],v[4],v[5], length=1000, normalize=False)
 
-    if False:
-        u, v = np.mgrid[0:2*np.pi:20j, 0:np.pi:10j]
-        x = radius*np.cos(u)*np.sin(v)
-        y = radius*np.sin(u)*np.sin(v)
-        z = radius*np.cos(v)
-        ax.plot_wireframe(x, y, z, color="gray", linewidth=1)
+    u, v = np.mgrid[0:2*np.pi:20j, 0:np.pi:10j]
+    x = radius*np.cos(u)*np.sin(v)
+    y = radius*np.sin(u)*np.sin(v)
+    z = radius*np.cos(v)
+    ax.plot_wireframe(x, y, z, color="gray", linewidth=1)
 
     fig.canvas.draw()       # draw the canvas, cache the renderer
     image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
