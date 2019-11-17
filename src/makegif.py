@@ -4,6 +4,13 @@ from mpl_toolkits.mplot3d import axes3d, Axes3D
 import numpy as np
 import imageio
 import csv
+import os
+
+size = 100000
+
+frames = len(os.listdir('results'))
+
+print(f"Rendering {frames} frames...")
 
 def plot(i):
     print(f"Generating frame {i}...") 
@@ -11,9 +18,12 @@ def plot(i):
 
     for row in csv.reader(open(f'results/{i}.csv')):
         for i in range(6): v[i].append(float(row[i]))
-
     fig = plt.figure()
-    ax = fig.gca(projection='3d')    
+
+    ax = fig.gca(projection='3d')   
+    ax.set_xlim3d(-size,size)
+    ax.set_ylim3d(-size,size)
+    ax.set_zlim3d(-size,size)
     
     ax.quiver(v[0],v[1],v[2],v[3],v[4],v[5], length=1000, normalize=False)
 
@@ -23,5 +33,4 @@ def plot(i):
 
     return image
 
-kwargs_write = {'fps':1.0, 'quantizer':'nq'}
-imageio.mimsave('./animation.gif', [plot(i) for i in range(9)], fps=1)
+imageio.mimsave('./animation.gif', [plot(i) for i in range(frames)], fps=5)

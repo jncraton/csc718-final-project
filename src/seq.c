@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #define N 1000
+#define ITERATIONS 400
 
 const double G = 6.674E-11;
 const double STEP_SIZE = 100.0;
@@ -64,7 +65,7 @@ int main() {
     z[i] = 10000.0 * dz[i];
   }
 
-  for (int i = 0; i < 200; i++) {
+  for (int i = 0; i <= ITERATIONS; i++) {
     if (!(i % 20)) {
       printf("%d iterations completed. Writing results...\n", i);
       save_results();
