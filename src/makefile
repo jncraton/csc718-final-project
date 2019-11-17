@@ -1,7 +1,7 @@
 all: animation.gif
 
 %: %.c
-	gcc -O2 -o $@ $<
+	gcc -O2 -o $@ $< -lm
 
 results/0.csv: seq
 	./seq
