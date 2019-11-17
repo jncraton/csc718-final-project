@@ -2,7 +2,8 @@
 #include <stdlib.h>
 
 #define N 100
-#define ITERATIONS 400
+#define ITERATIONS 40
+#define LOG_EVERY 1
 
 const double G = 6.674E-11;
 const double STEP_SIZE = 100.0;
@@ -22,8 +23,8 @@ void update_velocity(double *pos, double *vel, double *mass) {
     for (int j = 0; j < N; j++) {
       if (i != j) {
         double sep = pos[j] - pos[i];
-        if (sep > 1.0) {
-          vel[i] += G*mass[j]/(pos[j] - pos[i]);
+        if (sep > 1.0 || sep < -1.0) {
+          vel[i] += STEP_SIZE*G*mass[j]/(pos[j] - pos[i]);
         }
       }
     }
@@ -63,16 +64,16 @@ int main() {
   m[0] = 6E24;
   for (int i = 1; i<N; i++) {
     m[i] = 10000 * (double)rand() / (double)(RAND_MAX);
-    dx[i] = 3000*(((double)rand() / (double)(RAND_MAX))-0.5);
-    dy[i] = 6000 + 3000*(((double)rand() / (double)(RAND_MAX))-0.5);
-    dz[i] = 3000*(((double)rand() / (double)(RAND_MAX))-0.5);
-    x[i] = earth_radius;
+    dx[i] = 10*(((double)rand() / (double)(RAND_MAX))-0.5);
+    dy[i] = 60 + 10*(((double)rand() / (double)(RAND_MAX))-0.5);
+    dz[i] = 10*(((double)rand() / (double)(RAND_MAX))-0.5);
+    x[i] = -earth_radius;
     y[i] = 0;
     z[i] = 0;
   }
 
   for (int i = 0; i <= ITERATIONS; i++) {
-    if (!(i % 20)) {
+    if (!(i % LOG_EVERY)) {
       printf("%d iterations completed. Writing results...\n", i);
       save_results();
     }

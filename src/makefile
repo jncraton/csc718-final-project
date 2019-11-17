@@ -6,7 +6,7 @@ all: animation.gif
 results/0.csv: seq
 	./seq
 
-animation.gif: results/0.csv
+animation.gif: results/0.csv makegif.py
 	python3 makegif.py
 
 clean:

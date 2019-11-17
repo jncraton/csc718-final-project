@@ -6,7 +6,8 @@ import imageio
 import csv
 import os
 
-size = 100000000
+size = 10000000
+radius = 6.357E6
 
 frames = len(os.listdir('results'))
 
@@ -24,8 +25,15 @@ def plot(i):
     ax.set_xlim3d(-size,size)
     ax.set_ylim3d(-size,size)
     ax.set_zlim3d(-size,size)
-    
+
     ax.quiver(v[0],v[1],v[2],v[3],v[4],v[5], length=1000, normalize=False)
+
+    if False:
+        u, v = np.mgrid[0:2*np.pi:20j, 0:np.pi:10j]
+        x = radius*np.cos(u)*np.sin(v)
+        y = radius*np.sin(u)*np.sin(v)
+        z = radius*np.cos(v)
+        ax.plot_wireframe(x, y, z, color="gray", linewidth=1)
 
     fig.canvas.draw()       # draw the canvas, cache the renderer
     image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
