@@ -12,3 +12,4 @@ animation.gif: results/0.csv makegif.py
 clean:
 	rm -f seq
 	rm -f results/*
+	rm -f *.gif
