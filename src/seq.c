@@ -3,8 +3,8 @@
 #include <math.h>
 
 #define N 100
-#define ITERATIONS 400
-#define LOG_EVERY 20
+#define ITERATIONS 500000
+#define LOG_EVERY 2500
 
 const double G = 6.674E-11;
 const double STEP_SIZE = 1.0;
@@ -38,7 +38,7 @@ void update_velocity(struct Body *bodies) {
           (bodies[i].z-bodies[j].z) * (bodies[i].z-bodies[j].z)
         );
 
-        if (r2 > 100.0) {
+        if (r2 > earth_radius*earth_radius) {
           bodies[i].dx += ((bodies[j].x - bodies[i].x) / sqrt(r2)) * 
             STEP_SIZE*G*bodies[j].mass/r2;
           bodies[i].dy += ((bodies[j].y - bodies[i].y) / sqrt(r2)) * 
@@ -86,11 +86,11 @@ int main() {
   bodies[0].mass = 6E24;
   for (int i = 1; i<N; i++) {
     bodies[i].mass = 10000 * (double)rand() / (double)(RAND_MAX);
-    bodies[i].dx = -300 + 100*(((double)rand() / (double)(RAND_MAX))-0.5);
-    bodies[i].dy = 6000 + 100*(((double)rand() / (double)(RAND_MAX))-0.5);
-    bodies[i].dz = 100*(((double)rand() / (double)(RAND_MAX))-0.5);
-    bodies[i].x = -earth_radius;
-    bodies[i].y = 0;
+    bodies[i].dx = 9000; + 1000*(((double)rand() / (double)(RAND_MAX))-0.5);
+    bodies[i].dy = -3000 + 1000 *(((double)rand() / (double)(RAND_MAX))-0.5);
+    bodies[i].dz = 1000*(((double)rand() / (double)(RAND_MAX))-0.5);
+    bodies[i].x = 0;
+    bodies[i].y = -earth_radius;
     bodies[i].z = 0;
   }
 

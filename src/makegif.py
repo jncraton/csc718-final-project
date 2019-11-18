@@ -1,4 +1,5 @@
 import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d, Axes3D
 import numpy as np
@@ -6,10 +7,10 @@ import imageio
 import csv
 import os
 
-size = 10000000
+size = 100000000
 radius = 6.357E6
 
-frames = len(os.listdir('results'))
+frames = len(os.listdir('results')) - 1
 
 print(f"Rendering {frames} frames...")
 
