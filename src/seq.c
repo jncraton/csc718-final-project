@@ -3,12 +3,14 @@
 #include <math.h>
 
 #define N 100
-#define ITERATIONS 500000
+#define ITERATIONS 50000
 #define LOG_EVERY 2500
 
 const double G = 6.674E-11;
 const double STEP_SIZE = 1.0;
 const double earth_radius = 6.357E6;
+
+int num_bodies = N;
 
 struct Body {
   double mass;
@@ -38,13 +40,17 @@ void update_velocity(struct Body *bodies) {
           (bodies[i].z-bodies[j].z) * (bodies[i].z-bodies[j].z)
         );
 
-        if (r2 > earth_radius*earth_radius) {
+        if (r2 >= earth_radius*earth_radius) {
           bodies[i].dx += ((bodies[j].x - bodies[i].x) / sqrt(r2)) * 
             STEP_SIZE*G*bodies[j].mass/r2;
           bodies[i].dy += ((bodies[j].y - bodies[i].y) / sqrt(r2)) * 
             STEP_SIZE*G*bodies[j].mass/r2;
-          bodies[i].dy += ((bodies[j].z - bodies[i].z) / sqrt(r2)) * 
+          bodies[i].dz += ((bodies[j].z - bodies[i].z) / sqrt(r2)) * 
             STEP_SIZE*G*bodies[j].mass/r2;
+        } else {
+          if (j == 0) {
+            bodies[i].mass = 0;
+          }
         }
       }
     }
@@ -69,13 +75,15 @@ void save_results() {
 
   FILE* file = fopen(buf,"w");
   for (int i = 0; i < N; i++) {
-    fprintf(file, "%f,%f,%f,%f,%f,%f\n", 
-      bodies[i].x,
-      bodies[i].y,
-      bodies[i].z,
-      bodies[i].dx,
-      bodies[i].dy,
-      bodies[i].dz);
+    if (bodies[i].mass > 0) {
+      fprintf(file, "%f,%f,%f,%f,%f,%f\n", 
+        bodies[i].x,
+        bodies[i].y,
+        bodies[i].z,
+        bodies[i].dx,
+        bodies[i].dy,
+        bodies[i].dz);
+    }
   }
   fclose(file);
 }
@@ -86,8 +94,8 @@ int main() {
   bodies[0].mass = 6E24;
   for (int i = 1; i<N; i++) {
     bodies[i].mass = 10000 * (double)rand() / (double)(RAND_MAX);
-    bodies[i].dx = 9000; + 1000*(((double)rand() / (double)(RAND_MAX))-0.5);
-    bodies[i].dy = -3000 + 1000 *(((double)rand() / (double)(RAND_MAX))-0.5);
+    bodies[i].dx = 9000 + 1000*(((double)rand() / (double)(RAND_MAX))-0.5);
+    bodies[i].dy = 1000 + 1000 *(((double)rand() / (double)(RAND_MAX))-0.5);
     bodies[i].dz = 1000*(((double)rand() / (double)(RAND_MAX))-0.5);
     bodies[i].x = 0;
     bodies[i].y = -earth_radius;
