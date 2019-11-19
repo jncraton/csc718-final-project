@@ -7,7 +7,7 @@ import imageio
 import csv
 import os
 
-size = 10000000
+size = 30000000
 radius = 6.357E6
 
 frames = len(os.listdir('results')) - 1
