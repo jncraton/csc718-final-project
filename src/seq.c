@@ -2,21 +2,18 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define N 100
-#define ITERATIONS 50000
-#define LOG_EVERY 2500
+int N = 100;
+#define ITERATIONS 500000
+#define LOG_EVERY 25000
 
-const double G = 6.674E-11;
-const double STEP_SIZE = 100.0;
-const double earth_radius = 6.357E6;
-const double earth_mass = 6E24;
-//const double earth_volume = (4.0 / 3.0) * 3.14159 * earth_radius * earth_radius * earth_radius;
-//const double earth_density = earth_mass / earth_volume;
- 
-int num_bodies = N;
+#define G 6.674E-11
+#define STEP_SIZE 100.0
+#define earth_radius 6.357E6
+#define earth_mass 6.000E24
 
 struct Body {
   double mass;
+  double radius;
   double x;
   double y;
   double z;
@@ -27,7 +24,7 @@ struct Body {
 
 struct Body *bodies;
 
-void update_velocity(struct Body *bodies) {
+void update_velocity(struct Body *bodies, int merge) {
   //F = GmM/r^2
   //a = Gm/r^2 m is mass of the other, our mass cancels
   //r^2 = distance^2
@@ -43,8 +40,12 @@ void update_velocity(struct Body *bodies) {
           (bodies[i].z-bodies[j].z) * (bodies[i].z-bodies[j].z)
         );
 
-        if (j == 0 && r2 < earth_radius*earth_radius) {
-          bodies[i].mass = 0;
+        if (r2 < (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
+          if (merge) {
+            bodies[j].mass += bodies[i].mass;
+            bodies[i] = bodies[N-1];
+            N--;
+          }
         } else {
           bodies[i].dx += ((bodies[j].x - bodies[i].x) / sqrt(r2)) * 
             STEP_SIZE*G*bodies[j].mass/r2;
@@ -89,18 +90,29 @@ void save_results() {
   fclose(file);
 }
 
+double get_radius(double mass) {
+  static double earth_density = earth_mass / ((4.0 / 3.0) * 3.14159 * earth_radius * earth_radius * earth_radius);
+  
+  double volume = mass / earth_density;
+   // Volume = (4/3) pi r^3
+  // r^3 = volume * (3/4) / pi
+  double r3 = volume * (3.0/4.0) / 3.14159;
+  return cbrt(r3);
+}
+
 int main() {
   bodies = aligned_alloc(64, N*sizeof(struct Body));
 
   bodies[0].mass = earth_mass;
   for (int i = 1; i<N; i++) {
-    bodies[i].mass = 10000 * (double)rand() / (double)(RAND_MAX);
+    bodies[i].mass = 1E21 * (double)rand() / (double)(RAND_MAX);
+    bodies[i].radius = get_radius(bodies[i].mass);
     bodies[i].dx = 9000 + 1000*(((double)rand() / (double)(RAND_MAX))-0.5);
     bodies[i].dy = -3000 + 1000 *(((double)rand() / (double)(RAND_MAX))-0.5);
     bodies[i].dz = 1000*(((double)rand() / (double)(RAND_MAX))-0.5);
-    bodies[i].x = 1000 *(((double)rand() / (double)(RAND_MAX))-0.5);;
+    bodies[i].x = 20000 *(((double)rand() / (double)(RAND_MAX))-0.5);
     bodies[i].y = -earth_radius - 1E6;
-    bodies[i].z = 1000 *(((double)rand() / (double)(RAND_MAX))-0.5);;
+    bodies[i].z = 20000 *(((double)rand() / (double)(RAND_MAX))-0.5);
   }
 
   for (int i = 0; i <= ITERATIONS; i++) {
@@ -110,7 +122,7 @@ int main() {
     }
 
     // Update accelerations
-    update_velocity(bodies);
+    update_velocity(bodies, i > 100000);
 
     // Update positions
     update_position(bodies);

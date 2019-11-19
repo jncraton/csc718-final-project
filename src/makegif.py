@@ -7,7 +7,7 @@ import imageio
 import csv
 import os
 
-size = 30000000
+size = 100000000
 radius = 6.357E6
 
 frames = len(os.listdir('results')) - 1
@@ -20,6 +20,7 @@ def plot(i):
 
     for row in csv.reader(open(f'results/{i}.csv')):
         for i in range(6): v[i].append(float(row[i]))
+
     fig = plt.figure()
 
     ax = fig.gca(projection='3d')   
@@ -29,6 +30,8 @@ def plot(i):
 
     ax.quiver(v[0],v[1],v[2],v[3],v[4],v[5], length=1000, normalize=False)
 
+    plt.title(f'N = {len(v[0])}')
+    
     u, v = np.mgrid[0:2*np.pi:20j, 0:np.pi:10j]
     x = radius*np.cos(u)*np.sin(v)
     y = radius*np.sin(u)*np.sin(v)
