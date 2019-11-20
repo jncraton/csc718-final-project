@@ -25,6 +25,16 @@ struct Body {
 
 struct Body *bodies;
 
+double get_radius(double mass) {
+  static double earth_density = earth_mass / ((4.0 / 3.0) * 3.14159 * earth_radius * earth_radius * earth_radius);
+  
+  double volume = mass / earth_density;
+   // Volume = (4/3) pi r^3
+  // r^3 = volume * (3/4) / pi
+  double r3 = volume * (3.0/4.0) / 3.14159;
+  return cbrt(r3);
+}
+
 void update_velocity(struct Body *bodies) {
   //F = GmM/r^2
   //a = Gm/r^2 m is mass of the other, our mass cancels
@@ -47,6 +57,7 @@ void update_velocity(struct Body *bodies) {
             bodies[j].dy = (bodies[j].dy * bodies[j].mass + bodies[i].dy * bodies[i].mass) / new_mass;
             bodies[j].dz = (bodies[j].dz * bodies[j].mass + bodies[i].dz * bodies[i].mass) / new_mass;
             bodies[j].mass = new_mass;
+            bodies[j].radius = get_radius(new_mass);
             bodies[i] = bodies[N-1];
             N--;
         } else {
@@ -81,26 +92,18 @@ void save_results() {
   FILE* file = fopen(buf,"w");
   for (int i = 0; i < N; i++) {
     if (bodies[i].mass > 0) {
-      fprintf(file, "%f,%f,%f,%f,%f,%f\n", 
+      fprintf(file, "%f,%f,%f,%f,%f,%f,%f,%f\n", 
         bodies[i].x,
         bodies[i].y,
         bodies[i].z,
         bodies[i].dx,
         bodies[i].dy,
-        bodies[i].dz);
+        bodies[i].dz,
+        bodies[i].mass,
+        bodies[i].radius);
     }
   }
   fclose(file);
-}
-
-double get_radius(double mass) {
-  static double earth_density = earth_mass / ((4.0 / 3.0) * 3.14159 * earth_radius * earth_radius * earth_radius);
-  
-  double volume = mass / earth_density;
-   // Volume = (4/3) pi r^3
-  // r^3 = volume * (3/4) / pi
-  double r3 = volume * (3.0/4.0) / 3.14159;
-  return cbrt(r3);
 }
 
 int main() {
@@ -109,14 +112,15 @@ int main() {
   bodies = aligned_alloc(64, N*sizeof(struct Body));
 
   bodies[0].mass = earth_mass;
+  bodies[0].radius = get_radius(earth_mass);
   for (int i = 1; i<N; i++) {
-    bodies[i].mass = 1E12 * (double)rand() / (double)(RAND_MAX);
+    bodies[i].mass = 1E15 * (double)rand() / (double)(RAND_MAX);
     bodies[i].radius = get_radius(bodies[i].mass);
     bodies[i].dx = 9000 + 1000*(((double)rand() / (double)(RAND_MAX))-0.5);
     bodies[i].dy = -3000 + 1000 *(((double)rand() / (double)(RAND_MAX))-0.5);
     bodies[i].dz = 1000*(((double)rand() / (double)(RAND_MAX))-0.5);
     bodies[i].x = 20000 *(((double)rand() / (double)(RAND_MAX))-0.5);
-    bodies[i].y = -earth_radius - 1E6;
+    bodies[i].y = -earth_radius - 1E6 * ((double)rand() / (double)(RAND_MAX));
     bodies[i].z = 20000 *(((double)rand() / (double)(RAND_MAX))-0.5);
   }
 

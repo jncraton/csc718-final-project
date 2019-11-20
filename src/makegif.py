@@ -16,10 +16,10 @@ print(f"Rendering {frames} frames...")
 
 def plot(i):
     print(f"Generating frame {i}...") 
-    v = [[] for i in range(6)]
+    v = [[] for i in range(8)]
 
     for row in csv.reader(open(f'results/{i}.csv')):
-        for i in range(6): v[i].append(float(row[i]))
+        for i in range(8): v[i].append(float(row[i]))
 
     fig = plt.figure()
 
@@ -28,16 +28,11 @@ def plot(i):
     ax.set_ylim3d(-size,size)
     ax.set_zlim3d(-size,size)
 
-    ax.quiver(v[0],v[1],v[2],v[3],v[4],v[5], length=1000, normalize=False)
+    #ax.quiver(v[0],v[1],v[2],v[3],v[4],v[5], length=1000, normalize=False)
+    ax.scatter(v[0],v[1],v[2],s=[140 * i/radius for i in v[7]],c="blue",depthshade=False)
 
     plt.title(f'N = {len(v[0])}')
     
-    u, v = np.mgrid[0:2*np.pi:20j, 0:np.pi:10j]
-    x = radius*np.cos(u)*np.sin(v)
-    y = radius*np.sin(u)*np.sin(v)
-    z = radius*np.cos(v)
-    ax.plot_wireframe(x, y, z, color="gray", linewidth=1)
-
     fig.canvas.draw()       # draw the canvas, cache the renderer
     image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
     image  = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
