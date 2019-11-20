@@ -87,8 +87,6 @@ void save_results() {
   snprintf(buf, 32, "results/%d.csv", result_set);
   result_set++;
   
-  printf("%s\n", buf);
-
   FILE* file = fopen(buf,"w");
   for (int i = 0; i < N; i++) {
     if (bodies[i].mass > 0) {
@@ -124,9 +122,10 @@ int main() {
     bodies[i].z = 20000 *(((double)rand() / (double)(RAND_MAX))-0.5);
   }
 
+  double start = omp_get_wtime();
+
   for (int i = 0; i <= ITERATIONS; i++) {
     if (!((i - 1) % LOG_EVERY)) {
-      printf("%d iterations completed. Writing results...\n", i);
       save_results();
     }
 
@@ -136,6 +135,8 @@ int main() {
     // Update positions
     update_position(bodies);
   }
+
+  printf("Total time: %f\n", omp_get_wtime() - start);
 
   return 0;
 }
