@@ -109,6 +109,23 @@ I have chosen to select a problem to explore various parallel programming approa
 
 I intend to complete this project without a group or partner.
 
+Introduction
+------------
+
+I've chosen to explore building and optimizing an n-body physics simulator. The particular problem I've chosen to explore is the creation of moons due to asteroid impact. I have neither the expertise nor compute time available to really do this properly, but this project gave me away to explore paralell computing concept in a fun environment.
+
+My program outputs data files at configurable steps in the simulation process. The included makefile can be used to convert these into animation like the following:
+
+![](media/animation.gif)
+
+### Sequential
+
+I began this project by creating a simply sequential program to implement this simulation. Using the configured parameters, it runs in about 3.5 seconds on my system. Using that code as a starting point, I began the process of converting and opimizing it to make better use of the resources of a modern paralell computer.
+
+### OpenMP
+
+I used OpenMP to boost performance using a shared memory model.
+
 References
 ==========
 
