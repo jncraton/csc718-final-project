@@ -3,11 +3,11 @@
 #include <math.h>
 
 int N = 100;
-#define ITERATIONS 500000
-#define LOG_EVERY 25000
+#define ITERATIONS 10000
+#define LOG_EVERY  250
 
 #define G 6.674E-11
-#define STEP_SIZE 100.0
+#define STEP_SIZE 10.0
 #define earth_radius 6.357E6
 #define earth_mass 6.000E24
 
@@ -24,7 +24,7 @@ struct Body {
 
 struct Body *bodies;
 
-void update_velocity(struct Body *bodies, int merge) {
+void update_velocity(struct Body *bodies) {
   //F = GmM/r^2
   //a = Gm/r^2 m is mass of the other, our mass cancels
   //r^2 = distance^2
@@ -41,11 +41,13 @@ void update_velocity(struct Body *bodies, int merge) {
         );
 
         if (r2 < (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
-          if (merge) {
-            bodies[j].mass += bodies[i].mass;
+            double new_mass = bodies[i].mass + bodies[j].mass;
+            bodies[j].dx = (bodies[j].dx * bodies[j].mass + bodies[i].dx * bodies[i].mass) / new_mass;
+            bodies[j].dy = (bodies[j].dy * bodies[j].mass + bodies[i].dy * bodies[i].mass) / new_mass;
+            bodies[j].dz = (bodies[j].dz * bodies[j].mass + bodies[i].dz * bodies[i].mass) / new_mass;
+            bodies[j].mass = new_mass;
             bodies[i] = bodies[N-1];
             N--;
-          }
         } else {
           bodies[i].dx += ((bodies[j].x - bodies[i].x) / sqrt(r2)) * 
             STEP_SIZE*G*bodies[j].mass/r2;
@@ -101,11 +103,13 @@ double get_radius(double mass) {
 }
 
 int main() {
+  srand(0);
+
   bodies = aligned_alloc(64, N*sizeof(struct Body));
 
   bodies[0].mass = earth_mass;
   for (int i = 1; i<N; i++) {
-    bodies[i].mass = 1E21 * (double)rand() / (double)(RAND_MAX);
+    bodies[i].mass = 1E12 * (double)rand() / (double)(RAND_MAX);
     bodies[i].radius = get_radius(bodies[i].mass);
     bodies[i].dx = 9000 + 1000*(((double)rand() / (double)(RAND_MAX))-0.5);
     bodies[i].dy = -3000 + 1000 *(((double)rand() / (double)(RAND_MAX))-0.5);
@@ -116,13 +120,13 @@ int main() {
   }
 
   for (int i = 0; i <= ITERATIONS; i++) {
-    if (!(i % LOG_EVERY)) {
+    if (!((i - 1) % LOG_EVERY)) {
       printf("%d iterations completed. Writing results...\n", i);
       save_results();
     }
 
     // Update accelerations
-    update_velocity(bodies, i > 100000);
+    update_velocity(bodies);
 
     // Update positions
     update_position(bodies);

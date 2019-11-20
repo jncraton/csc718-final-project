@@ -44,4 +44,4 @@ def plot(i):
 
     return image
 
-imageio.mimsave('./animation.gif', [plot(i) for i in range(frames)], fps=5)
+imageio.mimsave('./animation.gif', [plot(i) for i in range(frames)], fps=4)
