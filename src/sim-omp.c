@@ -20,6 +20,7 @@ void update_velocity(struct Body *bodies) {
           (bodies[i].z-bodies[j].z) * (bodies[i].z-bodies[j].z)
         );
 
+        // TODO: This needs to move. We can't move and remove items while other threads are iterating
         if (r2 < (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
             new_mass = bodies[i].mass + bodies[j].mass;
             bodies[j].dx = (bodies[j].dx * bodies[j].mass + bodies[i].dx * bodies[i].mass) / new_mass;
