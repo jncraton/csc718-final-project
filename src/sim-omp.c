@@ -7,18 +7,21 @@ void update_velocity(struct Body *bodies) {
   //distance = sqrt(x^2 + y^2 + z^2)
   //r^2 = x^2 + y^2 + z^2
 
-  #pragma omp parallel for
+  double r2, new_mass;
+  int j;
+        
+  #pragma omp parallel for private(new_mass, r2, j)
   for (int i = 1; i < N; i++) {
-    for (int j = 0; j < N; j++) {
+    for (j = 0; j < N; j++) {
       if (i != j) {
-        double r2 = (
+        r2 = (
           (bodies[i].x-bodies[j].x) * (bodies[i].x-bodies[j].x) +
           (bodies[i].y-bodies[j].y) * (bodies[i].y-bodies[j].y) +
           (bodies[i].z-bodies[j].z) * (bodies[i].z-bodies[j].z)
         );
 
         if (r2 < (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
-            double new_mass = bodies[i].mass + bodies[j].mass;
+            new_mass = bodies[i].mass + bodies[j].mass;
             bodies[j].dx = (bodies[j].dx * bodies[j].mass + bodies[i].dx * bodies[i].mass) / new_mass;
             bodies[j].dy = (bodies[j].dy * bodies[j].mass + bodies[i].dy * bodies[i].mass) / new_mass;
             bodies[j].dz = (bodies[j].dz * bodies[j].mass + bodies[i].dz * bodies[i].mass) / new_mass;
