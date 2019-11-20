@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <omp.h>
 
-int N = 100;
-#define ITERATIONS 10000
-#define LOG_EVERY  250
+int N = 400;
+#define ITERATIONS 40000
+#define LOG_EVERY  1000
 
 #define G 6.674E-11
-#define STEP_SIZE 10.0
+#define STEP_SIZE 1
 #define earth_radius 6.357E6
 #define earth_mass 6.000E24
 
