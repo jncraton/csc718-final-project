@@ -124,7 +124,7 @@ I began this project by creating a simply sequential program to implement this s
 
 ### OpenMP
 
-I used OpenMP to boost performance using a shared memory model.
+I used OpenMP to boost performance using a shared memory model. By running the main loop in parallel, I was able to go from about 3.5 seconds of runtime to about .7 seconds using 12 threads (6 cores with 2 threads each). This represents roughly a 5x speedup from simple parallelism. In truth, this section of work took about 15 seconds and really shows the value of OpenMP as a tool.
 
 References
 ==========
