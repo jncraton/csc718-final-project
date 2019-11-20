@@ -12,6 +12,6 @@ animation.gif: results/0.csv makegif.py
 
 clean:
 	rm -f seq
-	rm -f sim-*
+	rm -f sim-omp
 	rm -f results/*
 	rm -f *.gif
