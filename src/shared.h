@@ -35,3 +35,25 @@ double get_radius(double mass) {
   return cbrt(r3);
 }
 
+void save_results() {
+  static int result_set = 0;
+  char buf[32];
+  snprintf(buf, 32, "results/%d.csv", result_set);
+  result_set++;
+  
+  FILE* file = fopen(buf,"w");
+  for (int i = 0; i < N; i++) {
+    if (bodies[i].mass > 0) {
+      fprintf(file, "%f,%f,%f,%f,%f,%f,%f,%f\n", 
+        bodies[i].x,
+        bodies[i].y,
+        bodies[i].z,
+        bodies[i].dx,
+        bodies[i].dy,
+        bodies[i].dz,
+        bodies[i].mass,
+        bodies[i].radius);
+    }
+  }
+  fclose(file);
+}
