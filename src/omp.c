@@ -59,7 +59,7 @@ void update_velocity(struct Body *bodies) {
 }
 
 void update_position(struct Body *bodies) {
-  for (int i = 1; i < N; i++) {
+  for (int i = 0; i < N; i++) {
     bodies[i].x += bodies[i].dx * STEP_SIZE;
     bodies[i].y += bodies[i].dy * STEP_SIZE;
     bodies[i].z += bodies[i].dz * STEP_SIZE;
