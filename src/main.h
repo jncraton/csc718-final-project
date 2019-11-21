@@ -1,7 +1,7 @@
 int main() {
   srand(0);
 
-  bodies = aligned_alloc(64, N*sizeof(struct Body));
+  bodies = malloc(N*sizeof(struct Body));
 
   bodies[0].mass = earth_mass;
   bodies[0].radius = get_radius(earth_mass);
