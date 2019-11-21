@@ -31,7 +31,9 @@ def plot(i):
 
     ax.scatter(v[0],v[1],v[2],s=[140 * i/radius for i in v[7]],c=["green" if i == 0 else "brown" for i in range(len(v[0]))],depthshade=False)
 
-    plt.title(f'N = {len(v[0])}')
+    orbital_mass = sum(v[6][1:])
+
+    plt.title(f'N={len(v[0])} Mass={orbital_mass:.2e}')
     
     fig.canvas.draw()       # draw the canvas, cache the renderer
     image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
