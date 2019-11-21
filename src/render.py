@@ -46,4 +46,4 @@ def plot(i):
 
     return image
 
-imageio.mimsave(sys.argv[1], [plot(i) for i in range(frames)], fps=2)
+imageio.mimsave(sys.argv[1], [plot(i) for i in [0,0,0] + list(range(frames))], fps=2)
