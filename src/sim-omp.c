@@ -8,10 +8,10 @@ void update_velocity(struct Body *bodies) {
   //r^2 = x^2 + y^2 + z^2
 
   double r2, new_mass;
-  int j;
+  int i,j;
         
   #pragma omp parallel for private(new_mass, r2, j)
-  for (int i = 1; i < N; i++) {
+  for (i = 1; i < N; i++) {
     for (j = 0; j < N; j++) {
       if (i != j) {
         r2 = (
@@ -21,16 +21,7 @@ void update_velocity(struct Body *bodies) {
         );
 
         // TODO: This needs to move. We can't move and remove items while other threads are iterating
-        if (r2 < (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
-            new_mass = bodies[i].mass + bodies[j].mass;
-            bodies[j].dx = (bodies[j].dx * bodies[j].mass + bodies[i].dx * bodies[i].mass) / new_mass;
-            bodies[j].dy = (bodies[j].dy * bodies[j].mass + bodies[i].dy * bodies[i].mass) / new_mass;
-            bodies[j].dz = (bodies[j].dz * bodies[j].mass + bodies[i].dz * bodies[i].mass) / new_mass;
-            bodies[j].mass = new_mass;
-            bodies[j].radius = get_radius(new_mass);
-            bodies[i] = bodies[N-1];
-            N--;
-        } else {
+        if (r2 > (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
           bodies[i].dx += ((bodies[j].x - bodies[i].x) / sqrt(r2)) * 
             STEP_SIZE*G*bodies[j].mass/r2;
           bodies[i].dy += ((bodies[j].y - bodies[i].y) / sqrt(r2)) * 
@@ -38,6 +29,27 @@ void update_velocity(struct Body *bodies) {
           bodies[i].dz += ((bodies[j].z - bodies[i].z) / sqrt(r2)) * 
             STEP_SIZE*G*bodies[j].mass/r2;
         }
+      }
+    }
+  }
+
+  for (j = 0; j < N; j++) {
+    for (i = j+1; i < N; i++) {
+      r2 = (
+        (bodies[i].x-bodies[j].x) * (bodies[i].x-bodies[j].x) +
+        (bodies[i].y-bodies[j].y) * (bodies[i].y-bodies[j].y) +
+        (bodies[i].z-bodies[j].z) * (bodies[i].z-bodies[j].z)
+      );
+
+      if (r2 < (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
+          new_mass = bodies[i].mass + bodies[j].mass;
+          bodies[j].dx = (bodies[j].dx * bodies[j].mass + bodies[i].dx * bodies[i].mass) / new_mass;
+          bodies[j].dy = (bodies[j].dy * bodies[j].mass + bodies[i].dy * bodies[i].mass) / new_mass;
+          bodies[j].dz = (bodies[j].dz * bodies[j].mass + bodies[i].dz * bodies[i].mass) / new_mass;
+          bodies[j].mass = new_mass;
+          bodies[j].radius = get_radius(new_mass);
+          bodies[i] = bodies[N-1];
+          N--;
       }
     }
   }

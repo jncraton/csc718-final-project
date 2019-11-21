@@ -3,8 +3,8 @@ all: animation.gif
 %: %.c
 	gcc -ffast-math -O3 -o $@ $< -lm -fopenmp 
 
-results/0.csv: sim-omp
-	./sim-omp
+results/0.csv: seq
+	./seq
 
 animation.gif: results/0.csv makegif.py
 	python3 makegif.py > /dev/null 2>&1 
