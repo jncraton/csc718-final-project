@@ -1,6 +1,6 @@
 all: media/seq.gif media/omp.gif
 
-dist/%: %.c
+dist/%: %.c shared.h main.h
 	gcc -ffast-math -O3 -o $@ $< -lm -fopenmp 
 
 media/%.gif: dist/% makegif.py

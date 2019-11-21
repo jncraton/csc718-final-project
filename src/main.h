@@ -6,7 +6,7 @@ int main() {
   bodies[0].mass = earth_mass;
   bodies[0].radius = get_radius(earth_mass);
   for (int i = 1; i<N; i++) {
-    bodies[i].mass = 1E15 * (double)rand() / (double)(RAND_MAX);
+    bodies[i].mass = mean_particle_mass * 2.0 * (double)rand() / (double)(RAND_MAX);
     bodies[i].radius = get_radius(bodies[i].mass);
     bodies[i].dx = 9000 + 1000*(((double)rand() / (double)(RAND_MAX))-0.5);
     bodies[i].dy = -3000 + 1000 *(((double)rand() / (double)(RAND_MAX))-0.5);
