@@ -8,7 +8,7 @@ import csv
 import os
 import sys
 
-size = 50000000
+size = 20000000
 radius = 6.357E6
 
 frames = len(os.listdir('results')) - 1
@@ -29,11 +29,13 @@ def plot(i):
     ax.set_ylim3d(-size,size)
     ax.set_zlim3d(-size,size)
 
-    ax.scatter(v[0],v[1],v[2],s=[140 * i/radius for i in v[7]],c=["green" if i == 0 else "brown" for i in range(len(v[0]))],depthshade=False)
+    colors = [[0.2,0.8,0.2,0.3] if i == 0 else [0.8,0.2,0.2,1.0] for i in range(len(v[0]))]
 
-    orbital_mass = sum(v[6][1:])
+    ax.scatter(v[0],v[1],v[2],s=[3000 * i/radius for i in v[7]],c=colors,depthshade=False)
 
-    plt.title(f'N={len(v[0])} Mass={orbital_mass:.2e}')
+    orbital_mass = sum(v[6][0:])
+
+    plt.title(f'N={len(v[0])} Mass={orbital_mass:.9e}')
     
     fig.canvas.draw()       # draw the canvas, cache the renderer
     image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')
@@ -41,4 +43,4 @@ def plot(i):
 
     return image
 
-imageio.mimsave(sys.argv[1], [plot(i) for i in range(frames)], fps=1)
+imageio.mimsave(sys.argv[1], [plot(i) for i in range(frames)], fps=2)
