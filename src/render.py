@@ -19,8 +19,11 @@ def plot(i):
     print(f"Generating frame {i}...") 
     v = [[] for i in range(8)]
 
+    time = 0
+
     for row in csv.reader(open(f'results/{i}.csv')):
         for i in range(8): v[i].append(float(row[i]))
+        time = row[8]
 
     fig = plt.figure()
 
@@ -35,7 +38,7 @@ def plot(i):
 
     orbital_mass = sum(v[6][1:])
 
-    plt.title(f'N={len(v[0])} Mass={orbital_mass:.3e}')
+    plt.title(f't={time} N={len(v[0])} Mass={orbital_mass:.3e}')
     
     fig.canvas.draw()       # draw the canvas, cache the renderer
     image = np.frombuffer(fig.canvas.tostring_rgb(), dtype='uint8')

@@ -18,9 +18,9 @@ int main() {
 
   double start = omp_get_wtime();
 
-  for (int i = 0; i <= ITERATIONS; i++) {
-    if (!((i - 1) % LOG_EVERY)) {
-      save_results();
+  for (int i = -1; i <= ITERATIONS; i++) {
+    if (!(i % LOG_EVERY)) {
+      save_results(i*STEP_SIZE);
     }
 
     // Update accelerations
