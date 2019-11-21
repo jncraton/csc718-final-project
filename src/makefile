@@ -1,17 +1,17 @@
-all: animation.gif
+all: media/seq.gif media/omp.gif
 
-%: %.c
+dist/%: %.c
 	gcc -ffast-math -O3 -o $@ $< -lm -fopenmp 
 
-results/0.csv: seq
-	./seq
-
-animation.gif: results/0.csv makegif.py
-	python3 makegif.py > /dev/null 2>&1 
-	gifsicle -O3 --batch animation.gif > /dev/null 2>&1
+media/%.gif: dist/% makegif.py
+	rm -rf results/*
+	$<
+	python3 makegif.py "$@" > /dev/null 2>&1 
+	gifsicle -O3 --batch "$@" > /dev/null 2>&1
 
 clean:
-	rm -f seq
-	rm -f sim-omp
-	rm -f results/*
+	rm -f dist/*
+	touch dist/.gitignore
+	rm -f results/*.csv
+	rm -f media/*.gif
 	rm -f *.gif

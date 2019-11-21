@@ -6,6 +6,7 @@ import numpy as np
 import imageio
 import csv
 import os
+import sys
 
 size = 50000000
 radius = 6.357E6
@@ -38,4 +39,4 @@ def plot(i):
 
     return image
 
-imageio.mimsave('./animation.gif', [plot(i) for i in range(frames)], fps=4)
+imageio.mimsave(sys.argv[1], [plot(i) for i in range(frames)], fps=4)
