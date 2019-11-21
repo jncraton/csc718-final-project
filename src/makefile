@@ -6,10 +6,10 @@ compare: media/seq.gif media/omp.gif
 dist/%: %.c shared.h main.h
 	gcc -std=c99 -Wall -Wextra -march=ivybridge -ffast-math -O3 -Ofast -o $@ $< -lm -fopenmp 
 
-media/%.gif: dist/% makegif.py
+media/%.gif: dist/% render.py
 	rm -rf results/*
 	$<
-	python3 makegif.py "$@" > /dev/null 2>&1 
+	python3 render.py "$@" > /dev/null 2>&1 
 	gifsicle -O3 --batch "$@" > /dev/null 2>&1
 
 clean:
