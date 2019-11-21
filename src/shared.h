@@ -22,6 +22,7 @@ struct Body {
   double dx;
   double dy;
   double dz;
+  char collisions;
 };
 
 struct Body *bodies;
