@@ -28,9 +28,9 @@ def plot(i):
     fig = plt.figure()
 
     ax = fig.gca(projection='3d')   
-    ax.set_xlim3d(-size,size)
-    ax.set_ylim3d(-size,size)
-    ax.set_zlim3d(-size,size)
+    ax.set_xlim3d(v[0][0]-size,v[0][0]+size)
+    ax.set_ylim3d(v[1][0]-size,v[1][0]+size)
+    ax.set_zlim3d(v[2][0]-size,v[2][0]+size)
 
     colors = [[0.2,0.8,0.2,0.3] if i == 0 else [0.8,0.2,0.2,1.0] for i in range(len(v[0]))]
 
