@@ -1,4 +1,8 @@
-all: media/seq.gif media/omp.gif
+all: compare
+
+compare: media/seq.gif media/omp.gif
+	cmp media/*.gif
+	
 
 dist/%: %.c shared.h main.h
 	gcc -ffast-math -O3 -o $@ $< -lm -fopenmp 
