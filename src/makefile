@@ -3,9 +3,8 @@ all: compare
 compare: media/seq.gif media/omp.gif
 	cmp media/*.gif
 	
-
 dist/%: %.c shared.h main.h
-	gcc -ffast-math -O3 -o $@ $< -lm -fopenmp 
+	gcc -march=ivybridge -ffast-math -O3 -Ofast -o $@ $< -lm -fopenmp 
 
 media/%.gif: dist/% makegif.py
 	rm -rf results/*
