@@ -28,7 +28,7 @@ def plot(i):
     ax.set_ylim3d(-size,size)
     ax.set_zlim3d(-size,size)
 
-    ax.scatter(v[0],v[1],v[2],s=[140 * i/radius for i in v[7]],c="blue",depthshade=False)
+    ax.scatter(v[0],v[1],v[2],s=[140 * i/radius for i in v[7]],c=["green" if i == 0 else "brown" for i in range(len(v[0]))],depthshade=False)
 
     plt.title(f'N = {len(v[0])}')
     
