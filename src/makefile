@@ -2,7 +2,10 @@ all: compare
 
 compare: media/seq.gif media/omp.gif
 	cmp media/*.gif
-	
+
+dist/cuda: cuda.cu
+	nvcc $< -o $@
+
 dist/%: %.c shared.h main.h
 	gcc -std=c99 -Wall -Wextra -march=ivybridge -ffast-math -O3 -Ofast -o $@ $< -lm -fopenmp 
 
