@@ -1,13 +1,14 @@
 all: compare
 
-compare: media/seq.gif media/omp.gif
-	cmp media/*.gif
+compare: media/seq.gif media/omp.gif media/cuda.gif
+	cmp $< media/omp.gif
+	cmp $< media/cuda.gif
 
 dist/cuda: cuda.cu
-	nvcc $< -o $@
+	nvcc --compiler-options -ffast-math --compiler-options -O3 --compiler-options -Ofast $< -o $@ --compiler-options -lm --compiler-options -fopenmp
 
 dist/%: %.c shared.h main.h
-	gcc -std=c99 -Wall -Wextra -march=ivybridge -ffast-math -O3 -Ofast -o $@ $< -lm -fopenmp 
+	g++ -Wall -Wextra -march=ivybridge -ffast-math -O3 -Ofast -o $@ $< -lm -fopenmp
 
 media/%.gif: dist/% render.py
 	rm -rf results/*
