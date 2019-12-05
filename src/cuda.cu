@@ -61,12 +61,6 @@ void update_velocity(struct Body *bodies) {
 
   update_from_gravity<<<1,1024>>>(cuda_bodies, cuda_N);
 
-  for (int j = 0; j<N; j++) {
-    bodies[j].x=0;
-    bodies[j].y=0;
-    bodies[j].z=0;
-  }
-
   gpuErrchk(cudaMemcpy(bodies, cuda_bodies, N * sizeof(Body), cudaMemcpyDeviceToHost));
   gpuErrchk(cudaFree(cuda_bodies));
 
