@@ -5,10 +5,10 @@ compare: media/seq.gif media/omp.gif media/cuda.gif
 	cmp $< media/cuda.gif
 
 dist/cuda: cuda.cu
-	nvcc --compiler-options -ffast-math --compiler-options -O3 --compiler-options -Ofast $< -o $@ --compiler-options -lm --compiler-options -fopenmp
+	nvcc --compiler-options -O3 $< -o $@ --compiler-options -lm --compiler-options -fopenmp
 
 dist/%: %.c shared.h main.h
-	g++ -Wall -Wextra -march=ivybridge -ffast-math -O3 -Ofast -o $@ $< -lm -fopenmp
+	g++ -Wall -Wextra -march=ivybridge -O3 -o $@ $< -lm -fopenmp
 
 media/%.gif: dist/% render.py
 	rm -rf results/*
