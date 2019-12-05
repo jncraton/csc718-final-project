@@ -31,7 +31,7 @@ int main() {
     update_position(bodies);
   }
 
-  printf("Total time: %f\n", omp_get_wtime() - start);
+  printf("Total time: %f Final N: %d\n", omp_get_wtime() - start, N);
 
   return 0;
 }

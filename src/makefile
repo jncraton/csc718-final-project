@@ -1,4 +1,4 @@
-all: compare
+all: media/omp.gif media/seq.gif media/cuda.gif
 
 compare: media/omp.gif media/seq.gif media/cuda.gif
 	cmp $< media/omp.gif
