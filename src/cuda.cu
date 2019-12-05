@@ -80,8 +80,7 @@ void update_velocity(struct Body *bodies) {
             bodies[j].dz = (bodies[j].dz * bodies[j].mass + bodies[i].dz * bodies[i].mass) / new_mass;
             bodies[j].mass = new_mass;
             bodies[j].radius = get_radius(new_mass);
-            bodies[i] = bodies[N-1];
-            N--;
+            bodies[i].mass = 0.0; 
         }
       }
     }

@@ -23,7 +23,16 @@ int main() {
     save_results(i*STEP_SIZE);
 
     update(bodies, LOG_EVERY);
+
+    for (int i = 0; i < N; i++) {
+      if (bodies[i].mass == 0.0) {
+        bodies[i] = bodies[N-1];
+        N--;
+      }
+    }
   }
+
+  save_results((ITERATIONS/LOG_EVERY+1)*STEP_SIZE);
 
   printf("Total time: %f Final N: %d\n", omp_get_wtime() - start, N);
 
