@@ -11,9 +11,11 @@ import sys
 size = 20000000
 radius = 6.357E6
 
-frames = len(os.listdir('results')) - 1
+version = sys.argv[1].split('/')[-1].replace('.gif','')
+results_dir = f'dist/{version}-results/'
+frames = len(os.listdir(results_dir)) - 1
 
-print(f"Rendering {frames} frames...")
+print(f"Rendering {frames} frames for {results_dir}...")
 
 def plot(i):
     print(f"Generating frame {i}...") 
@@ -21,7 +23,7 @@ def plot(i):
 
     time = 0
 
-    for row in csv.reader(open(f'results/{i}.csv')):
+    for row in csv.reader(open(f'{results_dir}/{i}.csv')):
         for i in range(8): v[i].append(float(row[i]))
         time = row[8]
 

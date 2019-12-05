@@ -40,7 +40,7 @@ double get_radius(double mass) {
 void save_results(int time) {
   static int result_set = 0;
   char buf[32];
-  snprintf(buf, 32, "results/%d.csv", result_set);
+  snprintf(buf, 32, "%d.csv", result_set);
   result_set++;
   
   FILE* file = fopen(buf,"w");
