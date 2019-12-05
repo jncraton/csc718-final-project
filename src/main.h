@@ -19,16 +19,10 @@ int main() {
 
   double start = omp_get_wtime();
 
-  for (int i = -1; i <= ITERATIONS; i++) {
-    if (!(i % LOG_EVERY)) {
-      save_results(i*STEP_SIZE);
-    }
+  for (int i = 0; i <= ITERATIONS/LOG_EVERY; i++) {
+    save_results(i*STEP_SIZE);
 
-    // Update accelerations
-    update_velocity(bodies);
-
-    // Update positions
-    update_position(bodies);
+    update(bodies, LOG_EVERY);
   }
 
   printf("Total time: %f Final N: %d\n", omp_get_wtime() - start, N);

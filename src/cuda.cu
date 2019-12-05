@@ -96,4 +96,11 @@ void update_position(struct Body *bodies) {
   }
 }
 
+void update(struct Body * bodies, int iterations) {
+  for (int i = 0; i < iterations; i++) {
+    update_velocity(bodies);
+    update_position(bodies);
+  }
+}
+
 #include "main.h"
