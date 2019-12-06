@@ -5,48 +5,66 @@ __global__ void update_from_gravity (Body * bodies, int * N) {
   int i,j;
   double earth_density = earth_mass / ((4.0 / 3.0) * 3.14159 * earth_radius * earth_radius * earth_radius);
 
-  for (i = threadIdx.x+1; i<*N; i+=blockDim.x) {
-    for (j = 0; j < *N; j++) {
-      if (i != j && bodies[i].mass && bodies[j].mass) {
+  i = blockIdx.x + 1;
+
+  for (j = threadIdx.x; j < *N; j+=blockDim.x) {
+    if (i != j) {
         r2 = (
           (bodies[i].x-bodies[j].x) * (bodies[i].x-bodies[j].x) +
           (bodies[i].y-bodies[j].y) * (bodies[i].y-bodies[j].y) +
           (bodies[i].z-bodies[j].z) * (bodies[i].z-bodies[j].z)
         );
-  
-        if (r2 > (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
-          bodies[i].dx += ((bodies[j].x - bodies[i].x) / sqrt(r2)) * 
-            STEP_SIZE*G*bodies[j].mass/r2;
-          bodies[i].dy += ((bodies[j].y - bodies[i].y) / sqrt(r2)) * 
-            STEP_SIZE*G*bodies[j].mass/r2;
-          bodies[i].dz += ((bodies[j].z - bodies[i].z) / sqrt(r2)) * 
-            STEP_SIZE*G*bodies[j].mass/r2;
-        } else {
-            new_mass = bodies[i].mass + bodies[j].mass;
-            bodies[j].dx = (bodies[j].dx * bodies[j].mass + bodies[i].dx * bodies[i].mass) / new_mass;
-            bodies[j].dy = (bodies[j].dy * bodies[j].mass + bodies[i].dy * bodies[i].mass) / new_mass;
-            bodies[j].dz = (bodies[j].dz * bodies[j].mass + bodies[i].dz * bodies[i].mass) / new_mass;
-            bodies[j].mass = new_mass;
 
-            double volume = new_mass / earth_density;
-             // Volume = (4/3) pi r^3
-            // r^3 = volume * (3/4) / pi
-            double r3 = volume * (3.0/4.0) / 3.14159;
+        atomicAdd(&bodies[i].dx, ((bodies[j].x - bodies[i].x) / sqrt(r2)) * 
+          STEP_SIZE*G*bodies[j].mass/r2);
+        atomicAdd(&bodies[i].dy, ((bodies[j].y - bodies[i].y) / sqrt(r2)) * 
+          STEP_SIZE*G*bodies[j].mass/r2);
+        atomicAdd(&bodies[i].dz, ((bodies[j].z - bodies[i].z) / sqrt(r2)) * 
+          STEP_SIZE*G*bodies[j].mass/r2);
 
-            bodies[j].radius = cbrt(r3);
-            bodies[i].mass = 0.0;
-        }
+      /*
+      r2 = (
+        (bodies[i].x-bodies[j].x) * (bodies[i].x-bodies[j].x) +
+        (bodies[i].y-bodies[j].y) * (bodies[i].y-bodies[j].y) +
+        (bodies[i].z-bodies[j].z) * (bodies[i].z-bodies[j].z)
+      );
+
+      if (r2 > (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
+        bodies[i].dx += ((bodies[j].x - bodies[i].x) / sqrt(r2)) * 
+          STEP_SIZE*G*bodies[j].mass/r2;
+        bodies[i].dy += ((bodies[j].y - bodies[i].y) / sqrt(r2)) * 
+          STEP_SIZE*G*bodies[j].mass/r2;
+        bodies[i].dz += ((bodies[j].z - bodies[i].z) / sqrt(r2)) * 
+          STEP_SIZE*G*bodies[j].mass/r2;
+      } else {
+          new_mass = bodies[i].mass + bodies[j].mass;
+          bodies[j].dx = (bodies[j].dx * bodies[j].mass + bodies[i].dx * bodies[i].mass) / new_mass;
+          bodies[j].dy = (bodies[j].dy * bodies[j].mass + bodies[i].dy * bodies[i].mass) / new_mass;
+          bodies[j].dz = (bodies[j].dz * bodies[j].mass + bodies[i].dz * bodies[i].mass) / new_mass;
+          bodies[j].mass = new_mass;
+
+          double volume = new_mass / earth_density;
+           // Volume = (4/3) pi r^3
+          // r^3 = volume * (3/4) / pi
+          double r3 = volume * (3.0/4.0) / 3.14159;
+
+          bodies[j].radius = cbrt(r3);
+          bodies[i].mass = 0.0;
+          bodies[i].radius = 0.0;
       }
+      */
     }
   }
 
+}
+
+__global__ void update_positions (Body * bodies, int * N) {
   // Update positions
   for (int i = threadIdx.x; i < *N; i+=blockDim.x) {
     bodies[i].x += bodies[i].dx * STEP_SIZE;
     bodies[i].y += bodies[i].dy * STEP_SIZE;
     bodies[i].z += bodies[i].dz * STEP_SIZE;
   }
-
 }
 
 // Nice GPU assertion code borrowed from:
@@ -72,7 +90,8 @@ void update(struct Body * bodies, int iterations) {
   gpuErrchk(cudaMemcpy(cuda_N, &N, sizeof(int), cudaMemcpyHostToDevice));
 
   for (int i = 0; i < iterations; i++) {
-    update_from_gravity<<<1,1024>>>(cuda_bodies, cuda_N);
+    update_from_gravity<<<N-1,128>>>(cuda_bodies, cuda_N);
+    update_positions<<<1,512>>>(cuda_bodies, cuda_N);
   }
 
   gpuErrchk(cudaMemcpy(bodies, cuda_bodies, N * sizeof(Body), cudaMemcpyDeviceToHost));
