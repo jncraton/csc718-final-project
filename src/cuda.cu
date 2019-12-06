@@ -1,12 +1,13 @@
 #include "shared.h"
 
 __global__ void update_from_gravity (Body * bodies, int * N) {
-  double r2;
+  double r2, new_mass;
   int i,j;
+  double earth_density = earth_mass / ((4.0 / 3.0) * 3.14159 * earth_radius * earth_radius * earth_radius);
 
-  for (i = threadIdx.x; i<*N; i+=blockDim.x) {
+  for (i = threadIdx.x+1; i<*N; i+=blockDim.x) {
     for (j = 0; j < *N; j++) {
-      if (i != j) {
+      if (i != j && bodies[i].mass && bodies[j].mass) {
         r2 = (
           (bodies[i].x-bodies[j].x) * (bodies[i].x-bodies[j].x) +
           (bodies[i].y-bodies[j].y) * (bodies[i].y-bodies[j].y) +
@@ -21,7 +22,19 @@ __global__ void update_from_gravity (Body * bodies, int * N) {
           bodies[i].dz += ((bodies[j].z - bodies[i].z) / sqrt(r2)) * 
             STEP_SIZE*G*bodies[j].mass/r2;
         } else {
-          bodies[j].collisions = 1;
+            new_mass = bodies[i].mass + bodies[j].mass;
+            bodies[j].dx = (bodies[j].dx * bodies[j].mass + bodies[i].dx * bodies[i].mass) / new_mass;
+            bodies[j].dy = (bodies[j].dy * bodies[j].mass + bodies[i].dy * bodies[i].mass) / new_mass;
+            bodies[j].dz = (bodies[j].dz * bodies[j].mass + bodies[i].dz * bodies[i].mass) / new_mass;
+            bodies[j].mass = new_mass;
+
+            double volume = new_mass / earth_density;
+             // Volume = (4/3) pi r^3
+            // r^3 = volume * (3/4) / pi
+            double r3 = volume * (3.0/4.0) / 3.14159;
+
+            bodies[j].radius = cbrt(r3);
+            bodies[i].mass = 0.0;
         }
       }
     }
@@ -47,8 +60,8 @@ void update_velocity(struct Body *bodies) {
   //distance = sqrt(x^2 + y^2 + z^2)
   //r^2 = x^2 + y^2 + z^2
 
-  double r2, new_mass;
-  int i,j;
+  //double r2, new_mass;
+  //int i,j;
 
   Body * cuda_bodies;
   int * cuda_N;
@@ -63,28 +76,6 @@ void update_velocity(struct Body *bodies) {
 
   gpuErrchk(cudaMemcpy(bodies, cuda_bodies, N * sizeof(Body), cudaMemcpyDeviceToHost));
   gpuErrchk(cudaFree(cuda_bodies));
-
-  for (j = 0; j < N; j++) {
-    if (bodies[j].collisions) {
-      for (i = j+1; i < N; i++) {
-        r2 = (
-          (bodies[i].x-bodies[j].x) * (bodies[i].x-bodies[j].x) +
-          (bodies[i].y-bodies[j].y) * (bodies[i].y-bodies[j].y) +
-          (bodies[i].z-bodies[j].z) * (bodies[i].z-bodies[j].z)
-        );
-  
-        if (r2 < (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
-            new_mass = bodies[i].mass + bodies[j].mass;
-            bodies[j].dx = (bodies[j].dx * bodies[j].mass + bodies[i].dx * bodies[i].mass) / new_mass;
-            bodies[j].dy = (bodies[j].dy * bodies[j].mass + bodies[i].dy * bodies[i].mass) / new_mass;
-            bodies[j].dz = (bodies[j].dz * bodies[j].mass + bodies[i].dz * bodies[i].mass) / new_mass;
-            bodies[j].mass = new_mass;
-            bodies[j].radius = get_radius(new_mass);
-            bodies[i].mass = 0.0; 
-        }
-      }
-    }
-  }
 }
 
 void update_position(struct Body *bodies) {
