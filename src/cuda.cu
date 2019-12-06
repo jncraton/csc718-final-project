@@ -39,6 +39,14 @@ __global__ void update_from_gravity (Body * bodies, int * N) {
       }
     }
   }
+
+  // Update positions
+  for (int i = threadIdx.x; i < *N; i+=blockDim.x) {
+    bodies[i].x += bodies[i].dx * STEP_SIZE;
+    bodies[i].y += bodies[i].dy * STEP_SIZE;
+    bodies[i].z += bodies[i].dz * STEP_SIZE;
+  }
+
 }
 
 // Nice GPU assertion code borrowed from:
@@ -79,17 +87,11 @@ void update_velocity(struct Body *bodies) {
 }
 
 void update_position(struct Body *bodies) {
-  for (int i = 0; i < N; i++) {
-    bodies[i].x += bodies[i].dx * STEP_SIZE;
-    bodies[i].y += bodies[i].dy * STEP_SIZE;
-    bodies[i].z += bodies[i].dz * STEP_SIZE;
-  }
 }
 
 void update(struct Body * bodies, int iterations) {
   for (int i = 0; i < iterations; i++) {
     update_velocity(bodies);
-    update_position(bodies);
   }
 }
 
