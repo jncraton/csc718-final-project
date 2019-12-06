@@ -8,28 +8,20 @@ __global__ void update_from_gravity (Body * bodies, int * N) {
   i = blockIdx.x + 1;
 
   for (j = threadIdx.x; j < *N; j+=blockDim.x) {
-    if (i != j) {
+    if (i != j && bodies[i].mass && bodies[j].mass) {
       r2 = (
         (bodies[i].x-bodies[j].x) * (bodies[i].x-bodies[j].x) +
         (bodies[i].y-bodies[j].y) * (bodies[i].y-bodies[j].y) +
         (bodies[i].z-bodies[j].z) * (bodies[i].z-bodies[j].z)
       );
 
-      atomicAdd(&bodies[i].dx, ((bodies[j].x - bodies[i].x) / sqrt(r2)) * 
-        STEP_SIZE*G*bodies[j].mass/r2);
-      atomicAdd(&bodies[i].dy, ((bodies[j].y - bodies[i].y) / sqrt(r2)) * 
-        STEP_SIZE*G*bodies[j].mass/r2);
-      atomicAdd(&bodies[i].dz, ((bodies[j].z - bodies[i].z) / sqrt(r2)) * 
-        STEP_SIZE*G*bodies[j].mass/r2);
-
-      /*
       if (r2 > (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
-        bodies[i].dx += ((bodies[j].x - bodies[i].x) / sqrt(r2)) * 
-          STEP_SIZE*G*bodies[j].mass/r2;
-        bodies[i].dy += ((bodies[j].y - bodies[i].y) / sqrt(r2)) * 
-          STEP_SIZE*G*bodies[j].mass/r2;
-        bodies[i].dz += ((bodies[j].z - bodies[i].z) / sqrt(r2)) * 
-          STEP_SIZE*G*bodies[j].mass/r2;
+        atomicAdd(&bodies[i].dx, ((bodies[j].x - bodies[i].x) / sqrt(r2)) * 
+          STEP_SIZE*G*bodies[j].mass/r2);
+        atomicAdd(&bodies[i].dy, ((bodies[j].y - bodies[i].y) / sqrt(r2)) * 
+          STEP_SIZE*G*bodies[j].mass/r2);
+        atomicAdd(&bodies[i].dz, ((bodies[j].z - bodies[i].z) / sqrt(r2)) * 
+          STEP_SIZE*G*bodies[j].mass/r2);
       } else {
           new_mass = bodies[i].mass + bodies[j].mass;
           bodies[j].dx = (bodies[j].dx * bodies[j].mass + bodies[i].dx * bodies[i].mass) / new_mass;
@@ -46,7 +38,6 @@ __global__ void update_from_gravity (Body * bodies, int * N) {
           bodies[i].mass = 0.0;
           bodies[i].radius = 0.0;
       }
-      */
     }
   }
 
