@@ -61,16 +61,7 @@ inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=t
    }
 }
 
-void update_velocity(struct Body *bodies) {
-  //F = GmM/r^2
-  //a = Gm/r^2 m is mass of the other, our mass cancels
-  //r^2 = distance^2
-  //distance = sqrt(x^2 + y^2 + z^2)
-  //r^2 = x^2 + y^2 + z^2
-
-  //double r2, new_mass;
-  //int i,j;
-
+void update(struct Body * bodies, int iterations) {
   Body * cuda_bodies;
   int * cuda_N;
 
@@ -80,19 +71,12 @@ void update_velocity(struct Body *bodies) {
   gpuErrchk(cudaMalloc(&cuda_N, sizeof(int)));
   gpuErrchk(cudaMemcpy(cuda_N, &N, sizeof(int), cudaMemcpyHostToDevice));
 
-  update_from_gravity<<<1,1024>>>(cuda_bodies, cuda_N);
+  for (int i = 0; i < iterations; i++) {
+    update_from_gravity<<<1,1024>>>(cuda_bodies, cuda_N);
+  }
 
   gpuErrchk(cudaMemcpy(bodies, cuda_bodies, N * sizeof(Body), cudaMemcpyDeviceToHost));
   gpuErrchk(cudaFree(cuda_bodies));
-}
-
-void update_position(struct Body *bodies) {
-}
-
-void update(struct Body * bodies, int iterations) {
-  for (int i = 0; i < iterations; i++) {
-    update_velocity(bodies);
-  }
 }
 
 #include "main.h"
