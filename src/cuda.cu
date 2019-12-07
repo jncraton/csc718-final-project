@@ -16,14 +16,13 @@ __global__ void update_from_gravity (Body * bodies, int * N) {
         (bodies[i].z-bodies[j].z) * (bodies[i].z-bodies[j].z)
       );
 
+      double gravity_force = rsqrt(r2) * STEP_SIZE * G * bodies[j].mass * (1/r2);
+
       // 22 Operations (including 3 atomic)
       if (r2 > (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
-        atomicAdd(&bodies[i].dx, ((bodies[j].x - bodies[i].x) / sqrt(r2)) * 
-          STEP_SIZE*G*bodies[j].mass/r2);
-        atomicAdd(&bodies[i].dy, ((bodies[j].y - bodies[i].y) / sqrt(r2)) * 
-          STEP_SIZE*G*bodies[j].mass/r2);
-        atomicAdd(&bodies[i].dz, ((bodies[j].z - bodies[i].z) / sqrt(r2)) * 
-          STEP_SIZE*G*bodies[j].mass/r2);
+        atomicAdd(&bodies[i].dx, (bodies[j].x - bodies[i].x) * gravity_force);
+        atomicAdd(&bodies[i].dy, (bodies[j].y - bodies[i].y) * gravity_force);
+        atomicAdd(&bodies[i].dz, (bodies[j].z - bodies[i].z) * gravity_force);
       } else {
           new_mass = bodies[i].mass + bodies[j].mass;
           bodies[j].dx = (bodies[j].dx * bodies[j].mass + bodies[i].dx * bodies[i].mass) / new_mass;
