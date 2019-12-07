@@ -18,14 +18,11 @@ int main() {
   }
 
   double start = omp_get_wtime();
-  long long int operations = 0;
 
   for (int i = 0; i <= ITERATIONS/LOG_EVERY; i++) {
     save_results(i*STEP_SIZE);
 
     update(bodies, LOG_EVERY);
-
-    operations += LOG_EVERY * (34 * N * N + 6 * N);
 
     for (int i = 0; i < N; i++) {
       if (bodies[i].mass == 0.0) {
@@ -38,9 +35,8 @@ int main() {
   save_results((ITERATIONS/LOG_EVERY+1)*STEP_SIZE);
 
   float elapsed = omp_get_wtime() - start;
-  float gflops = operations / elapsed / 1E9;
 
-  printf("Total time: %f Final N: %d Total Operations: %lld (%f GFLOPS)\n", elapsed, N, operations, gflops);
+  printf("Total time: %f Final N: %d\n", elapsed, N);
 
   return 0;
 }
