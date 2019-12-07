@@ -3,7 +3,6 @@
 #include <math.h>
 #include <omp.h>
 
-//#define N0 16384
 #define N0 8192
 int N = N0;
 #define ITERATIONS 400
@@ -11,7 +10,7 @@ int N = N0;
 
 #define G 6.674E-11
 #define STEP_SIZE 100
-#define mean_particle_mass 1E11
+#define mean_particle_mass 1E12
 #define earth_radius 6.357E6
 #define earth_mass 6.000E24
 
