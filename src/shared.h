@@ -3,7 +3,8 @@
 #include <math.h>
 #include <omp.h>
 
-#define N0 16384
+//#define N0 16384
+#define N0 8192
 int N = N0;
 #define ITERATIONS 400
 #define LOG_EVERY  10
