@@ -20,6 +20,5 @@ media/%.gif: dist/% render.py
 clean:
 	rm -rf dist/*
 	touch dist/.gitignore
-	rm -f results/*.csv
 	rm -f media/*.gif
 	rm -f *.gif
