@@ -10,7 +10,6 @@ __global__ void update_from_gravity (Body * bodies, int * N) {
   if (bodies[i].mass) {
     for (j = threadIdx.x; j < *N; j+=blockDim.x) {
       if (i != j && bodies[j].mass) {
-        // 12 Operations
         r2 = (
           (bodies[i].x-bodies[j].x) * (bodies[i].x-bodies[j].x) +
           (bodies[i].y-bodies[j].y) * (bodies[i].y-bodies[j].y) +
@@ -19,7 +18,6 @@ __global__ void update_from_gravity (Body * bodies, int * N) {
   
         double unit_gravity = rsqrt(r2) * STEP_SIZE * G * bodies[j].mass * (1/r2);
   
-        // 22 Operations (including 3 atomic)
         if (r2 > (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
           atomicAdd(&bodies[i].dx, (bodies[j].x - bodies[i].x) * unit_gravity);
           atomicAdd(&bodies[i].dy, (bodies[j].y - bodies[i].y) * unit_gravity);
@@ -43,7 +41,6 @@ __global__ void update_from_gravity (Body * bodies, int * N) {
       }
     }
   }
-
 }
 
 __global__ void update_positions (Body * bodies, int * N) {
