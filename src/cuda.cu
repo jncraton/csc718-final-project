@@ -78,7 +78,7 @@ void update(struct Body * bodies, int iterations) {
 
   for (int i = 0; i < iterations; i++) {
     update_from_gravity<<<N-1,128>>>(cuda_bodies, cuda_N);
-    update_positions<<<1,512>>>(cuda_bodies, cuda_N);
+    update_positions<<<1,1024>>>(cuda_bodies, cuda_N);
   }
 
   gpuErrchk(cudaMemcpy(bodies, cuda_bodies, N * sizeof(Body), cudaMemcpyDeviceToHost));
