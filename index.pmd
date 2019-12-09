@@ -134,12 +134,12 @@ GPU         NVidia P3200          14 Shader Modules, 1792 Shader Units, 6 GB RAM
 Sequential
 ----------
 
-I began this project by creating a simply sequential program to implement this simulation. Using the configured parameters, it runs in about 98 seconds on my system. Using that code as a starting point, I began the process of converting and opimizing it to make better use of the resources of a modern paralell computer.
+I began this project by creating a simply sequential program to implement this simulation. Using the configured parameters, it runs in about 120 seconds on my system. Using that code as a starting point, I began the process of converting and opimizing it to make better use of the resources of a modern paralell computer.
 
 OpenMP
 ------
 
-I used OpenMP to boost performance using a shared memory model. By running the main loop in parallel, I was able to go from about 96 seconds of runtime to about 22 seconds using 12 threads (6 cores with 2 threads each). This represents over a 4x speedup from parallelism. In truth, this implementation took only a few minutes and really shows the value of OpenMP as a tool.
+I used OpenMP to boost performance using a shared memory model. By running the main loop in parallel, I was able to go from about 120 seconds of runtime to about 31 seconds using 12 threads (6 cores with 2 threads each). This represents about a 4x speedup from parallelism. In truth, this implementation took only a few minutes and really shows the value of OpenMP as a tool.
 
 CUDA
 ----
@@ -151,9 +151,9 @@ Performance Comparison
 
 Implementation    Runtime
 ----------------  ---------
-Sequential        96 s
-OpenMP            22 s
-CUDA              7 s
+Sequential        120 s
+OpenMP            31 s
+CUDA              5.1 s
 
 References
 ==========
