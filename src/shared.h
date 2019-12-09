@@ -13,6 +13,8 @@ int N = N0;
 #define mean_particle_mass 1E12
 #define earth_radius 6.357E6
 #define earth_mass 6.000E24
+//earth_mass / ((4.0 / 3.0) * 3.14159 * earth_radius * earth_radius * earth_radius)
+#define earth_density 5575.789
 
 typedef float fptype;
 
@@ -31,8 +33,6 @@ struct Body {
 struct Body *bodies;
 
 fptype get_radius(fptype mass) {
-  static fptype earth_density = earth_mass / ((4.0 / 3.0) * 3.14159 * earth_radius * earth_radius * earth_radius);
-  
   fptype volume = mass / earth_density;
    // Volume = (4/3) pi r^3
   // r^3 = volume * (3/4) / pi
@@ -49,13 +49,10 @@ void save_results(Body * bodies, int time) {
   FILE* file = fopen(buf,"w");
   for (int i = 0; i < N; i++) {
     if (bodies[i].mass > 0) {
-      fprintf(file, "%f,%f,%f,%f,%f,%f,%f,%f,%d\n", 
+      fprintf(file, "%.03e,%.03e,%.03e,%.03e,%.03e,%d\n", 
         bodies[i].x,
         bodies[i].y,
         bodies[i].z,
-        bodies[i].dx,
-        bodies[i].dy,
-        bodies[i].dz,
         bodies[i].mass,
         bodies[i].radius,
         time

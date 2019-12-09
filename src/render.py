@@ -19,13 +19,13 @@ print(f"Rendering {frames} frames for {results_dir}...")
 
 def plot(i):
     print(f"Generating frame {i}...") 
-    v = [[] for i in range(8)]
+    v = [[] for i in range(5)]
 
     time = 0
 
     for row in csv.reader(open(f'{results_dir}/{i}.csv')):
-        for i in range(8): v[i].append(float(row[i]))
-        time = row[8]
+        for i in range(5): v[i].append(float(row[i]))
+        time = row[5]
 
     fig = plt.figure()
 
@@ -36,9 +36,9 @@ def plot(i):
 
     colors = [[0.2,0.8,0.2,0.3] if i == 0 else [0.8,0.2,0.2,1.0] for i in range(len(v[0]))]
 
-    ax.scatter(v[0],v[1],v[2],s=[3000 * i/radius for i in v[7]],c=colors,depthshade=False)
+    ax.scatter(v[0],v[1],v[2],s=[3000 * i/radius for i in v[4]],c=colors,depthshade=False)
 
-    orbital_mass = sum(v[6][1:])
+    orbital_mass = sum(v[3][1:])
 
     plt.title(f't={time} N={len(v[0])} Mass={orbital_mass:.3e}')
     

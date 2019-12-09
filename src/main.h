@@ -17,12 +17,16 @@ int main() {
     bodies[i].z = 20000 *(((fptype)rand() / (fptype)(RAND_MAX))-0.5);
   }
 
+  long long inner_loops = 0;
+
   double start = omp_get_wtime();
 
   for (int i = 0; i <= ITERATIONS/LOG_EVERY; i++) {
     save_results(bodies, i*STEP_SIZE);
 
     update(bodies, LOG_EVERY);
+
+    inner_loops += N*N*LOG_EVERY;
 
     for (int i = 0; i < N; i++) {
       if (bodies[i].mass == 0.0) {
@@ -36,7 +40,7 @@ int main() {
 
   float elapsed = omp_get_wtime() - start;
 
-  printf("Total time: %f Final N: %d\n", elapsed, N);
+  printf("Total time: %f Final N: %d Inner loops: %.01f billion\n", elapsed, N, inner_loops/1e9);
 
   return 0;
 }

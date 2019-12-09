@@ -2,7 +2,6 @@
 
 __global__ void update_from_gravity (Body * bodies, int * N) {
   fptype r2, new_mass;
-  fptype earth_density = earth_mass / ((4.0 / 3.0) * 3.14159 * earth_radius * earth_radius * earth_radius);
 
   int i = blockIdx.x + 1;
   int j = blockIdx.y * blockDim.y + threadIdx.x;
@@ -14,7 +13,7 @@ __global__ void update_from_gravity (Body * bodies, int * N) {
       (bodies[i].z-bodies[j].z) * (bodies[i].z-bodies[j].z)
     );
 
-    fptype unit_gravity = rsqrt(r2) * STEP_SIZE * G * bodies[j].mass * (1/r2);
+    fptype unit_gravity = rsqrt(r2) *rsqrt(r2) *rsqrt(r2) * STEP_SIZE * G * bodies[j].mass;
 
     if (r2 > (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
       atomicAdd(&bodies[i].dx, (bodies[j].x - bodies[i].x) * unit_gravity);
