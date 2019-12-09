@@ -199,7 +199,7 @@ This produced significant speedup, but I could see from very basic analysis that
     | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
     |===============================+======================+======================|
     |   0  Quadro P3200        Off  | 00000000:01:00.0 Off |                  N/A |
-    | N/A   61C    P0    36W /  N/A |     89MiB /  6078MiB |    100%      Default |
+    | N/A   55C    P0    36W /  N/A |     89MiB /  6078MiB |    100%      Default |
     +-------------------------------+----------------------+----------------------+
                                                                                    
     +-----------------------------------------------------------------------------+
@@ -231,7 +231,7 @@ We can use multiple blocks and multiple threads per block like this:
 update_from_gravity<<<N-1,128>>>(cuda_bodies, cuda_N);
 ```
 
-Now we see the GPU hitting its max TDP:
+Now we see the GPU hitting higher TDP:
 
     +-----------------------------------------------------------------------------+
     | NVIDIA-SMI 440.36       Driver Version: 440.36       CUDA Version: 10.2     |
@@ -240,7 +240,7 @@ Now we see the GPU hitting its max TDP:
     | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
     |===============================+======================+======================|
     |   0  Quadro P3200        Off  | 00000000:01:00.0 Off |                  N/A |
-    | N/A   68C    P0    79W /  N/A |     89MiB /  6078MiB |    100%      Default |
+    | N/A   58C    P0    67W /  N/A |     89MiB /  6078MiB |    100%      Default |
     +-------------------------------+----------------------+----------------------+
                                                                                    
     +-----------------------------------------------------------------------------+
