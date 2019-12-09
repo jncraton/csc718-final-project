@@ -8,7 +8,7 @@ dist/cuda: cuda.cu
 	nvcc --compiler-options -O3 $< -o $@ --compiler-options -lm --compiler-options -fopenmp -arch=sm_60
 
 dist/%: %.c shared.h main.h
-	g++ -Wall -Wextra -march=ivybridge -O3 -o $@ $< -lm -fopenmp
+	g++ -Wall -Wextra -pg -march=ivybridge -O3 -o $@ $< -lm -fopenmp
 
 media/%.gif: dist/% render.py
 	rm -rf $<-results
