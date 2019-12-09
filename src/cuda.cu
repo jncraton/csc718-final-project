@@ -48,11 +48,9 @@ __global__ void update_positions (Body * bodies, int * N) {
 
   int i = blockIdx.x * blockDim.x + threadIdx.x;
 
-  if (i < *N) {
-    bodies[i].x += bodies[i].dx * STEP_SIZE;
-    bodies[i].y += bodies[i].dy * STEP_SIZE;
-    bodies[i].z += bodies[i].dz * STEP_SIZE;
-  }
+  bodies[i].x += bodies[i].dx * STEP_SIZE;
+  bodies[i].y += bodies[i].dy * STEP_SIZE;
+  bodies[i].z += bodies[i].dz * STEP_SIZE;
 }
 
 // Nice GPU assertion code borrowed from:
