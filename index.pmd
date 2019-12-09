@@ -98,8 +98,8 @@ Since CUDA 6.0, NVIDIA has provided a Unified Memory model that allows a single 
 
 This shared memory model is one of the significant advantages of CUDA programming. Its primary limitation is that it is only usable on NVIDIA GPUs, as it is a proprietary framework developed and provided by NVIDIA. Overall, CUDA programming provides an effective and relatively straigtforward way for programmers to write code that can execute in parallel on an NVIDIA GPU.
 
-Project Part II
-===============
+Project Part II Proposal
+========================
 
 I have chosen to select a problem to explore various parallel programming approaches. I will likely experiment with an n-body physics simulation using the following techniques:
 
