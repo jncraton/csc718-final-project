@@ -14,27 +14,29 @@ int N = N0;
 #define earth_radius 6.357E6
 #define earth_mass 6.000E24
 
+typedef float fptype;
+
 struct Body {
-  double mass;
-  double radius;
-  double x;
-  double y;
-  double z;
-  double dx;
-  double dy;
-  double dz;
+  fptype mass;
+  fptype radius;
+  fptype x;
+  fptype y;
+  fptype z;
+  fptype dx;
+  fptype dy;
+  fptype dz;
   char collisions;
 };
 
 struct Body *bodies;
 
-double get_radius(double mass) {
-  static double earth_density = earth_mass / ((4.0 / 3.0) * 3.14159 * earth_radius * earth_radius * earth_radius);
+fptype get_radius(fptype mass) {
+  static fptype earth_density = earth_mass / ((4.0 / 3.0) * 3.14159 * earth_radius * earth_radius * earth_radius);
   
-  double volume = mass / earth_density;
+  fptype volume = mass / earth_density;
    // Volume = (4/3) pi r^3
   // r^3 = volume * (3/4) / pi
-  double r3 = volume * (3.0/4.0) / 3.14159;
+  fptype r3 = volume * (3.0/4.0) / 3.14159;
   return cbrt(r3);
 }
 

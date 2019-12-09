@@ -7,7 +7,7 @@ void update_velocity(struct Body *bodies) {
   //distance = sqrt(x^2 + y^2 + z^2)
   //r^2 = x^2 + y^2 + z^2
 
-  double r2, new_mass;
+  fptype r2, new_mass;
   int i,j;
         
   for (i = 1; i < N; i++) {

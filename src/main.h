@@ -7,14 +7,14 @@ int main() {
   bodies[0].radius = get_radius(earth_mass);
   bodies[0].dx = 29000;
   for (int i = 1; i<N; i++) {
-    bodies[i].mass = mean_particle_mass * (1.0 + (double)rand() / (double)(RAND_MAX));
+    bodies[i].mass = mean_particle_mass * (1.0 + (fptype)rand() / (fptype)(RAND_MAX));
     bodies[i].radius = get_radius(bodies[i].mass);
-    bodies[i].dx = 37000 + 1000*(((double)rand() / (double)(RAND_MAX))-0.5);
-    bodies[i].dy = -4000 + 8000 *(((double)rand() / (double)(RAND_MAX))-0.5);
-    bodies[i].dz = 4000 * (((double)rand() / (double)(RAND_MAX)));
-    bodies[i].x = 20000 *(((double)rand() / (double)(RAND_MAX))-0.5);
-    bodies[i].y = -earth_radius - 1E6 * ((double)rand() / (double)(RAND_MAX));
-    bodies[i].z = 20000 *(((double)rand() / (double)(RAND_MAX))-0.5);
+    bodies[i].dx = 37000 + 1000*(((fptype)rand() / (fptype)(RAND_MAX))-0.5);
+    bodies[i].dy = -4000 + 8000 *(((fptype)rand() / (fptype)(RAND_MAX))-0.5);
+    bodies[i].dz = 4000 * (((fptype)rand() / (fptype)(RAND_MAX)));
+    bodies[i].x = 20000 *(((fptype)rand() / (fptype)(RAND_MAX))-0.5);
+    bodies[i].y = -earth_radius - 1E6 * ((fptype)rand() / (fptype)(RAND_MAX));
+    bodies[i].z = 20000 *(((fptype)rand() / (fptype)(RAND_MAX))-0.5);
   }
 
   double start = omp_get_wtime();

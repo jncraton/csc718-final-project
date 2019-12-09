@@ -1,9 +1,9 @@
 #include "shared.h"
 
 __global__ void update_from_gravity (Body * bodies, int * N) {
-  double r2, new_mass;
+  fptype r2, new_mass;
   int i,j;
-  double earth_density = earth_mass / ((4.0 / 3.0) * 3.14159 * earth_radius * earth_radius * earth_radius);
+  fptype earth_density = earth_mass / ((4.0 / 3.0) * 3.14159 * earth_radius * earth_radius * earth_radius);
 
   i = blockIdx.x + 1;
 
@@ -16,7 +16,7 @@ __global__ void update_from_gravity (Body * bodies, int * N) {
           (bodies[i].z-bodies[j].z) * (bodies[i].z-bodies[j].z)
         );
   
-        double unit_gravity = rsqrt(r2) * STEP_SIZE * G * bodies[j].mass * (1/r2);
+        fptype unit_gravity = rsqrt(r2) * STEP_SIZE * G * bodies[j].mass * (1/r2);
   
         if (r2 > (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
           atomicAdd(&bodies[i].dx, (bodies[j].x - bodies[i].x) * unit_gravity);
@@ -29,10 +29,10 @@ __global__ void update_from_gravity (Body * bodies, int * N) {
             bodies[j].dz = (bodies[j].dz * bodies[j].mass + bodies[i].dz * bodies[i].mass) / new_mass;
             bodies[j].mass = new_mass;
   
-            double volume = new_mass / earth_density;
+            fptype volume = new_mass / earth_density;
              // Volume = (4/3) pi r^3
             // r^3 = volume * (3/4) / pi
-            double r3 = volume * (3.0/4.0) / 3.14159;
+            fptype r3 = volume * (3.0/4.0) / 3.14159;
   
             bodies[j].radius = cbrt(r3);
             bodies[i].mass = 0.0;
