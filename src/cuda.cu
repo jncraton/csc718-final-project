@@ -20,20 +20,20 @@ __global__ void update_from_gravity (Body * bodies, int * N) {
       atomicAdd(&bodies[i].dy, (bodies[j].y - bodies[i].y) * unit_gravity);
       atomicAdd(&bodies[i].dz, (bodies[j].z - bodies[i].z) * unit_gravity);
     } else {
-        new_mass = bodies[i].mass + bodies[j].mass;
-        bodies[j].dx = (bodies[j].dx * bodies[j].mass + bodies[i].dx * bodies[i].mass) / new_mass;
-        bodies[j].dy = (bodies[j].dy * bodies[j].mass + bodies[i].dy * bodies[i].mass) / new_mass;
-        bodies[j].dz = (bodies[j].dz * bodies[j].mass + bodies[i].dz * bodies[i].mass) / new_mass;
-        bodies[j].mass = new_mass;
+      new_mass = bodies[i].mass + bodies[j].mass;
+      bodies[j].dx = (bodies[j].dx * bodies[j].mass + bodies[i].dx * bodies[i].mass) / new_mass;
+      bodies[j].dy = (bodies[j].dy * bodies[j].mass + bodies[i].dy * bodies[i].mass) / new_mass;
+      bodies[j].dz = (bodies[j].dz * bodies[j].mass + bodies[i].dz * bodies[i].mass) / new_mass;
+      bodies[j].mass = new_mass;
 
-        fptype volume = new_mass / earth_density;
-         // Volume = (4/3) pi r^3
-        // r^3 = volume * (3/4) / pi
-        fptype r3 = volume * (3.0/4.0) / 3.14159;
+      fptype volume = new_mass / earth_density;
+       // Volume = (4/3) pi r^3
+      // r^3 = volume * (3/4) / pi
+      fptype r3 = volume * (3.0/4.0) / 3.14159;
 
-        bodies[j].radius = cbrt(r3);
-        bodies[i].mass = 0.0;
-        bodies[i].radius = 0.0;
+      bodies[j].radius = cbrt(r3);
+      bodies[i].mass = 0.0;
+      bodies[i].radius = 0.0;
     }
   }
 }
