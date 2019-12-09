@@ -199,7 +199,7 @@ This produced significant speedup, but I could see from very basic analysis that
     | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
     |===============================+======================+======================|
     |   0  Quadro P3200        Off  | 00000000:01:00.0 Off |                  N/A |
-    | N/A   61C    P0    52W /  N/A |     89MiB /  6078MiB |    100%      Default |
+    | N/A   61C    P0    36W /  N/A |     89MiB /  6078MiB |    100%      Default |
     +-------------------------------+----------------------+----------------------+
                                                                                    
     +-----------------------------------------------------------------------------+
@@ -209,15 +209,29 @@ This produced significant speedup, but I could see from very basic analysis that
     |    0      2717      C   ../../dist/cuda                               79MiB |
     +-----------------------------------------------------------------------------+
 
+### Multiple Blocks
+
+CUDA kernels introduce a concept called blocks in order to allow code to run over a number of Shader Modules. With a single block, all code is executed by only a single SM. This is very inefficient.
+
+![CUDA Kernel Blocks](media/cuda-kernel-blocks.png)
+
+We can use multiple blocks for a kernel when calling it so that it is able to be processed by multiple shader modules:
+
+```c
+update_from_gravity<<<N,1>>>(cuda_bodies, cuda_N)
+```
+
+This produces a significant speed up over the previous version, but we can still do much better.
 
 Performance Comparison
 ======================
 
-Implementation    Runtime
-----------------  ---------
-Sequential        120 s
-OpenMP            31 s
-CUDA              5.1 s
+Implementation                Runtime
+----------------------------  ---------
+Sequential                    120 s
+OpenMP                        31 s
+CUDA (1 thread per block)     36 s
+CUDA (128 threads per block)  5.1 s
 
 References
 ==========
