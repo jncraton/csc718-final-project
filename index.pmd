@@ -252,6 +252,25 @@ Now we see the GPU hitting its max TDP:
 
 This reduces our runtime to 5.1 seconds, a 6x speedup from our OpenMP implementation.
 
+### Removing Explicit Loops
+
+CUDA also provides us with a way to use multidimensional blocks. This is the proper way to execute our code so that we aren't running explicit loops on the GPU. Here's how this is called:
+
+```c
+int threads_per_block = 1024;
+dim3 grid(N-1, N / threads_per_block);
+update_from_gravity<<<grid,threads_per_block>>>(cuda_bodies, cuda_N);
+```
+
+We then update our kernel to calculate the appropriate memory indices using CUDA-supplied indices:
+
+```c
+int i = blockIdx.x + 1;
+int j = blockIdx.y * blockDim.y + threadIdx.x;
+```
+
+This improves out runtime to 4.3 seconds.
+
 
 Performance Comparison
 ======================
@@ -262,6 +281,7 @@ Sequential                    120 s
 OpenMP                        31 s
 CUDA (1 thread per block)     36 s
 CUDA (128 threads per block)  5.1 s
+CUDA (no explicit loops)      4.3 s
 
 References
 ==========
