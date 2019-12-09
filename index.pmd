@@ -223,6 +223,36 @@ update_from_gravity<<<N,1>>>(cuda_bodies, cuda_N)
 
 This produces a significant speed up over the previous version, but we can still do much better.
 
+### Multiple Blocks with Multiple Threads
+
+We can use multiple blocks and multiple threads per block like this:
+
+```c
+update_from_gravity<<<N-1,128>>>(cuda_bodies, cuda_N);
+```
+
+Now we see the GPU hitting its max TDP:
+
+    +-----------------------------------------------------------------------------+
+    | NVIDIA-SMI 440.36       Driver Version: 440.36       CUDA Version: 10.2     |
+    |-------------------------------+----------------------+----------------------+
+    | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+    | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+    |===============================+======================+======================|
+    |   0  Quadro P3200        Off  | 00000000:01:00.0 Off |                  N/A |
+    | N/A   68C    P0    79W /  N/A |     89MiB /  6078MiB |    100%      Default |
+    +-------------------------------+----------------------+----------------------+
+                                                                                   
+    +-----------------------------------------------------------------------------+
+    | Processes:                                                       GPU Memory |
+    |  GPU       PID   Type   Process name                             Usage      |
+    |=============================================================================|
+    |    0      2717      C   ../../dist/cuda                               79MiB |
+    +-----------------------------------------------------------------------------+
+
+This reduces our runtime to 5.1 seconds, a 6x speedup from our OpenMP implementation.
+
+
 Performance Comparison
 ======================
 
