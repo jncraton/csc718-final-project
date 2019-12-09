@@ -45,7 +45,10 @@ __global__ void update_from_gravity (Body * bodies, int * N) {
 
 __global__ void update_positions (Body * bodies, int * N) {
   // Update positions
-  for (int i = threadIdx.x; i < *N; i+=blockDim.x) {
+
+  int i = blockIdx.x * blockDim.x + threadIdx.x;
+
+  if (i < *N) {
     bodies[i].x += bodies[i].dx * STEP_SIZE;
     bodies[i].y += bodies[i].dy * STEP_SIZE;
     bodies[i].z += bodies[i].dz * STEP_SIZE;
@@ -76,7 +79,10 @@ void update(struct Body * bodies, int iterations) {
 
   for (int i = 0; i < iterations; i++) {
     update_from_gravity<<<N-1,128>>>(cuda_bodies, cuda_N);
-    update_positions<<<1,1024>>>(cuda_bodies, cuda_N);
+
+    int threads_per_block = 32;
+    int blocks = 1 + N / threads_per_block;
+    update_positions<<<blocks,threads_per_block>>>(cuda_bodies, cuda_N);
   }
 
   gpuErrchk(cudaMemcpy(bodies, cuda_bodies, N * sizeof(Body), cudaMemcpyDeviceToHost));
