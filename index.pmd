@@ -271,9 +271,19 @@ int j = blockIdx.y * blockDim.y + threadIdx.x;
 
 This improves our runtime to 3.8 seconds.
 
+### Additional Improvements
+
+While I was happy to handily outperform all of my CPU cores with CUDA, I believe that there may still be room for improvement. This problem is tricky to optimize for several reasons:
+
+1. N decreases as the simulation progresses, so it is not possible preselect values to optimally consume GPU resources.
+2. A branch is required when searching to handle collision detection. This shouldn't be a massive hit, as it should be an easy branch to predict, but it does still come at some cost.
+
+My current implementation also has one additional branch to ensure that we aren't comparing objects to themselves. It would be lovely if this could be removed. I also currently make use of atomic operations. It is possible that there is a way to order operations and perform syncronization to eliminate these.
 
 Performance Comparison
 ======================
+
+Here's a summary of the performance of these implenetations:
 
 Implementation                Runtime
 ----------------------------  ---------
@@ -282,6 +292,15 @@ OpenMP                        31 s
 CUDA (1 thread per block)     36 s
 CUDA (128 threads per block)  5.1 s
 CUDA (no explicit loops)      3.8 s
+
+We see that my final CUDA implementation outperforms my sequential code by over 30x.
+
+Final Thoughts
+==============
+
+This project provided a great platform for me to learn about parallel computing. The problem I explored had obvious sections that could be improved via parallelism, but it was also challenging to optimize those gains due to a dynamic N and a few required branches.
+
+I feel confident that I could use CUDA or other GPU programming environments to create optimized algorithms in the future.
 
 References
 ==========
