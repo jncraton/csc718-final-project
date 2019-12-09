@@ -146,6 +146,70 @@ CUDA
 
 The bulk of my work in this project involved learning CUDA and adjusting my program to appropraiately make use of the GPU.
 
+### Proof of Concept
+
+My CUDA work began by simply working to get the problem to run on my GPU. Having not used my workstation for GPU programming previously, I wanted to challenge myself to get the code running locally rather than on the provided AWS instance. I ended up spending a non-trivial amount of time getting drivers installed and X configured properly so that I could use my Intel GPU for graphics while having my NVidia GPU active and ready to be used for processing. This setup allows me to continue working without any graphical hiccups while my GPU is busy with computation.
+
+I won't go into the detail of every step in my process (this is all available in the Git history if you are curious), but I did want to highlight that I initially implemented this using only a single block and a single thread, e.g.:
+
+```c
+update_from_gravity<<<1,1>>>(cuda_bodies, cuda_N);
+```
+
+This allowed me to simply get up and running using only slight modifications to my sequential code. The performance of this code is not worth mentioning, and I never executed it in a way that would make it comparable to my other implementations.
+
+CUDA-enabled devices do not share memory with the host system, so we have to allocate device memory and fill it from the host. I achieved this by calling:
+
+```c
+cudaMalloc(&cuda_bodies, N * sizeof(Body))
+```
+
+This allocates the memory. I then copy the data to my GPU using:
+
+```c
+cudaMemcpy(cuda_bodies, bodies, N * sizeof(Body), cudaMemcpyHostToDevice)
+```
+
+Once the simulation has completed the selected number of iterations, it copies the data back to host system for processing:
+
+```c
+cudaMemcpy(bodies, cuda_bodies, N * sizeof(Body), cudaMemcpyDeviceToHost)
+```
+
+### Multiple Threads
+
+It's a bit silly to write single-threaded code to run on a GPU, so the next step in my process was to implement multithreading. I did this by calling into my kernel as follows:
+
+```c
+update_from_gravity<<<1,1024>>>(cuda_bodies, cuda_N);
+```
+
+I could then adjust my loop conditions to have each thread perform only every 1024th operation something like the following:
+
+```c
+for (j = threadIdx.x; j < *N; j+=blockDim.x) {
+```
+
+This produced significant speedup, but I could see from very basic analysis that it was still inefficient. I noticed quite simply that my GPU was not maxing out it's power profile (It should be able to pull 80W):
+
+    +-----------------------------------------------------------------------------+
+    | NVIDIA-SMI 440.36       Driver Version: 440.36       CUDA Version: 10.2     |
+    |-------------------------------+----------------------+----------------------+
+    | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+    | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+    |===============================+======================+======================|
+    |   0  Quadro P3200        Off  | 00000000:01:00.0 Off |                  N/A |
+    | N/A   61C    P0    52W /  N/A |     89MiB /  6078MiB |    100%      Default |
+    +-------------------------------+----------------------+----------------------+
+                                                                                   
+    +-----------------------------------------------------------------------------+
+    | Processes:                                                       GPU Memory |
+    |  GPU       PID   Type   Process name                             Usage      |
+    |=============================================================================|
+    |    0      2717      C   ../../dist/cuda                               79MiB |
+    +-----------------------------------------------------------------------------+
+
+
 Performance Comparison
 ======================
 
