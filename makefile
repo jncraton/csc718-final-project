@@ -4,7 +4,7 @@ all: test $(SRC).html slides.html revealjs
 
 .PHONY: show showpdf clean deploy
 
-slides.html: $(SRC).md makefile
+slides.html: slides.md makefile
 	pandoc --mathjax -t revealjs -s -o $@ $< -V revealjs-url=revealjs -V theme=moon
 
 revealjs:

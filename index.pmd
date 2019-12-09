@@ -109,6 +109,9 @@ I have chosen to select a problem to explore various parallel programming approa
 
 I intend to complete this project without a group or partner.
 
+Project Part II Implementation
+==============================
+
 Introduction
 ------------
 
@@ -120,11 +123,24 @@ My program outputs data files at configurable steps in the simulation process. T
 
 ### Sequential
 
-I began this project by creating a simply sequential program to implement this simulation. Using the configured parameters, it runs in about 3.5 seconds on my system. Using that code as a starting point, I began the process of converting and opimizing it to make better use of the resources of a modern paralell computer.
+I began this project by creating a simply sequential program to implement this simulation. Using the configured parameters, it runs in about 98 seconds on my system. Using that code as a starting point, I began the process of converting and opimizing it to make better use of the resources of a modern paralell computer.
 
 ### OpenMP
 
-I used OpenMP to boost performance using a shared memory model. By running the main loop in parallel, I was able to go from about 3.5 seconds of runtime to about .7 seconds using 12 threads (6 cores with 2 threads each). This represents roughly a 5x speedup from simple parallelism. In truth, this section of work took about 15 seconds and really shows the value of OpenMP as a tool.
+I used OpenMP to boost performance using a shared memory model. By running the main loop in parallel, I was able to go from about 96 seconds of runtime to about 22 seconds using 12 threads (6 cores with 2 threads each). This represents over a 4x speedup from parallelism. In truth, this implementation took only a few minutes and really shows the value of OpenMP as a tool.
+
+### CUDA
+
+The bulk of my work in this project involved learning CUDA and adjusting my program to appropraiately make use of the GPU.
+
+Performance Comparison
+======================
+
+Implementation    Runtime
+----------------  ---------
+Sequential        96 s
+OpenMP            22 s
+CUDA              7 s
 
 References
 ==========
