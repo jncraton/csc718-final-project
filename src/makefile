@@ -6,6 +6,7 @@ compare: media/omp.gif media/seq.gif media/cuda.gif
 
 dist/cuda: cuda.cu
 	nvcc --compiler-options -O3 $< -o $@ --compiler-options -lm --compiler-options -fopenmp -arch=sm_60
+	cd dist/cuda-results && nvprof ../cuda
 
 dist/%: %.c shared.h main.h
 	g++ -Wall -Wextra -march=ivybridge -O3 -o $@ $< -lm -fopenmp

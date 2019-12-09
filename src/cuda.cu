@@ -69,7 +69,9 @@ void update(struct Body * bodies, int iterations) {
   Body * cuda_bodies;
   int * cuda_N;
 
-  gpuErrchk(cudaMalloc(&cuda_bodies, N * sizeof(Body)));
+  int threads_per_block = 32;
+
+  gpuErrchk(cudaMalloc(&cuda_bodies, (N + threads_per_block) * sizeof(Body)));
   gpuErrchk(cudaMemcpy(cuda_bodies, bodies, N * sizeof(Body), cudaMemcpyHostToDevice));
 
   gpuErrchk(cudaMalloc(&cuda_N, sizeof(int)));
@@ -78,7 +80,6 @@ void update(struct Body * bodies, int iterations) {
   for (int i = 0; i < iterations; i++) {
     update_from_gravity<<<N-1,128>>>(cuda_bodies, cuda_N);
 
-    int threads_per_block = 32;
     int blocks = 1 + N / threads_per_block;
     update_positions<<<blocks,threads_per_block>>>(cuda_bodies, cuda_N);
   }
