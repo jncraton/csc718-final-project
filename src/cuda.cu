@@ -13,7 +13,7 @@ __global__ void update_from_gravity (Body * bodies, int * N) {
       (bodies[i].z-bodies[j].z) * (bodies[i].z-bodies[j].z)
     );
 
-    fptype unit_gravity = rsqrt(r2) *rsqrt(r2) *rsqrt(r2) * STEP_SIZE * G * bodies[j].mass;
+    fptype unit_gravity = rsqrt(r2) * STEP_SIZE * G * bodies[j].mass * (1/r2);
 
     if (r2 > (bodies[i].radius + bodies[j].radius) * (bodies[i].radius + bodies[j].radius)) {
       atomicAdd(&bodies[i].dx, (bodies[j].x - bodies[i].x) * unit_gravity);
