@@ -20,7 +20,7 @@ int main() {
   double start = omp_get_wtime();
 
   for (int i = 0; i <= ITERATIONS/LOG_EVERY; i++) {
-    save_results(i*STEP_SIZE);
+    save_results(bodies, i*STEP_SIZE);
 
     update(bodies, LOG_EVERY);
 
@@ -32,7 +32,7 @@ int main() {
     }
   }
 
-  save_results((ITERATIONS/LOG_EVERY+1)*STEP_SIZE);
+  save_results(bodies, (ITERATIONS/LOG_EVERY+1)*STEP_SIZE);
 
   float elapsed = omp_get_wtime() - start;
 

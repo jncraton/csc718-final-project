@@ -40,7 +40,7 @@ fptype get_radius(fptype mass) {
   return cbrt(r3);
 }
 
-void save_results(int time) {
+void save_results(Body * bodies, int time) {
   static int result_set = 0;
   char buf[32];
   snprintf(buf, 32, "%d.csv", result_set);
