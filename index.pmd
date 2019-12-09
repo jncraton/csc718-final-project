@@ -121,15 +121,28 @@ My program outputs data files at configurable steps in the simulation process. T
 
 ![](media/animation.gif)
 
-### Sequential
+Hardware
+--------
+
+This code was tested and benchmarked on by workstation. The meaningful specs are:
+
+Component   Model                 Specs
+----------  --------------------  -----------------------------------------------
+CPU         Intel Core i7-8850H   6 Cores, 12 Threads, 2.6GHz clock
+GPU         NVidia P3200          14 Shader Modules, 1792 Shader Units, 6 GB RAM
+
+Sequential
+----------
 
 I began this project by creating a simply sequential program to implement this simulation. Using the configured parameters, it runs in about 98 seconds on my system. Using that code as a starting point, I began the process of converting and opimizing it to make better use of the resources of a modern paralell computer.
 
-### OpenMP
+OpenMP
+------
 
 I used OpenMP to boost performance using a shared memory model. By running the main loop in parallel, I was able to go from about 96 seconds of runtime to about 22 seconds using 12 threads (6 cores with 2 threads each). This represents over a 4x speedup from parallelism. In truth, this implementation took only a few minutes and really shows the value of OpenMP as a tool.
 
-### CUDA
+CUDA
+----
 
 The bulk of my work in this project involved learning CUDA and adjusting my program to appropraiately make use of the GPU.
 
