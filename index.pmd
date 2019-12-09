@@ -269,7 +269,7 @@ int i = blockIdx.x + 1;
 int j = blockIdx.y * blockDim.y + threadIdx.x;
 ```
 
-This improves out runtime to 4.3 seconds.
+This improves our runtime to 3.8 seconds.
 
 
 Performance Comparison
@@ -281,7 +281,7 @@ Sequential                    120 s
 OpenMP                        31 s
 CUDA (1 thread per block)     36 s
 CUDA (128 threads per block)  5.1 s
-CUDA (no explicit loops)      4.3 s
+CUDA (no explicit loops)      3.8 s
 
 References
 ==========
