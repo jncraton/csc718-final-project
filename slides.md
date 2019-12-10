@@ -13,7 +13,7 @@ Research Question
 -----------------
 
 - In October, [we discovered 20 new moons of Saturn](http://www.astronomy.com/news/2019/10/20-new-moons-discovered-orbiting-saturn)
-- How does a large body disintigrating on impact form moons or ring systems around a planetoid?
+- How does a large body disintegrating on impact form moons or ring systems around a planetoid?
 
 Algorithm
 ---------
@@ -66,7 +66,7 @@ Theory
 
 OpenMP gives us a way to make use of additional CPU cores in a shared memory environment
 
-Psuedocode
+Pseudocode
 ----------
 
 ```c
@@ -91,7 +91,7 @@ CUDA Implementation
 Theory
 ------
 
-Use paralell processing resources of GPU to improve performance
+Use parallel processing resources of GPU to improve performance
 
 Pseudocode
 ----------
