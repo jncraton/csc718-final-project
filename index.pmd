@@ -192,22 +192,22 @@ for (j = threadIdx.x; j < *N; j+=blockDim.x) {
 
 This produced significant speedup, but I could see from very basic analysis that it was still inefficient. I noticed quite simply that my GPU was not maxing out it's power profile (It should be able to pull 80W):
 
-    +-----------------------------------------------------------------------------+
-    | NVIDIA-SMI 440.36       Driver Version: 440.36       CUDA Version: 10.2     |
-    |-------------------------------+----------------------+----------------------+
-    | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-    | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-    |===============================+======================+======================|
-    |   0  Quadro P3200        Off  | 00000000:01:00.0 Off |                  N/A |
-    | N/A   55C    P0    36W /  N/A |     89MiB /  6078MiB |    100%      Default |
-    +-------------------------------+----------------------+----------------------+
-                                                                                   
-    +-----------------------------------------------------------------------------+
-    | Processes:                                                       GPU Memory |
-    |  GPU       PID   Type   Process name                             Usage      |
-    |=============================================================================|
-    |    0      2717      C   ../../dist/cuda                               79MiB |
-    +-----------------------------------------------------------------------------+
+    +-------------------------------+
+    | NVIDIA-SMI 440.36             |
+    |-------------------------------+
+    | GPU  Name        Persistence-M|
+    | Fan  Temp  Perf  Pwr:Usage/Cap|
+    |===============================+
+    |   0  Quadro P3200        Off  |
+    | N/A   55C    P0    36W /  N/A |
+    +-------------------------------+
+
+    +-------------------------------+
+    | Processes:                    |
+    |  GPU       PID   Type   Proc  |
+    |===============================+
+    |    0      2717      C   cuda  |
+    +-------------------------------+
 
 ### Multiple Blocks
 
@@ -233,22 +233,22 @@ update_from_gravity<<<N-1,128>>>(cuda_bodies, cuda_N);
 
 Now we see the GPU hitting higher TDP:
 
-    +-----------------------------------------------------------------------------+
-    | NVIDIA-SMI 440.36       Driver Version: 440.36       CUDA Version: 10.2     |
-    |-------------------------------+----------------------+----------------------+
-    | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-    | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-    |===============================+======================+======================|
-    |   0  Quadro P3200        Off  | 00000000:01:00.0 Off |                  N/A |
-    | N/A   58C    P0    67W /  N/A |     89MiB /  6078MiB |    100%      Default |
-    +-------------------------------+----------------------+----------------------+
-                                                                                   
-    +-----------------------------------------------------------------------------+
-    | Processes:                                                       GPU Memory |
-    |  GPU       PID   Type   Process name                             Usage      |
-    |=============================================================================|
-    |    0      2717      C   ../../dist/cuda                               79MiB |
-    +-----------------------------------------------------------------------------+
+    +-------------------------------+
+    | NVIDIA-SMI 440.36             |
+    |-------------------------------+
+    | GPU  Name        Persistence-M|
+    | Fan  Temp  Perf  Pwr:Usage/Cap|
+    |===============================+
+    |   0  Quadro P3200        Off  |
+    | N/A   55C    P0    67W /  N/A |
+    +-------------------------------+
+
+    +-------------------------------+
+    | Processes:                    |
+    |  GPU       PID   Type   Proc  |
+    |===============================+
+    |    0      3217      C   cuda  |
+    +-------------------------------+
 
 This reduces our runtime to 5.1 seconds, a 6x speedup from our OpenMP implementation.
 
