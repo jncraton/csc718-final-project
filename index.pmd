@@ -104,9 +104,30 @@ Introduction
 
 I've chosen to explore building and optimizing an n-body physics simulator. The particular problem I've chosen to explore is the creation of moons due to asteroid impact. I have neither the expertise nor compute time available to really do this properly, but this project gave me away to explore paralell computing concept in a fun environment.
 
+Wikipedia describes N-body simulation as:
+
+> In physics and astronomy, an N-body simulation is a simulation of a dynamical system of particles, usually under the influence of physical forces, such as gravity
+
+Research Question
+-----------------
+
+- In October, [we discovered 20 new moons of Saturn](http://www.astronomy.com/news/2019/10/20-new-moons-discovered-orbiting-saturn).
+- How does a large body disintigrating on impact with another large body form moons or ring systems around a planetoid?
+
+Algorithm
+---------
+
+We begin by creating many (N) bodies with initial condition suitable for the physical process we want to study. We then iterativly update these bodies to simulate their motion. The steps for the update process are:
+
+1. Apply gravitational force to each body from every other body - O(N^2)
+2. Search for collisions and merge objects - O(N^2)
+3. Update positions using new velocity vectors - O(N)
+
 My program outputs data files at configurable steps in the simulation process. The included makefile can be used to convert these into animations like the following:
 
 ![](media/animation.gif)
+
+Note that the reported mass is the total mass in orbit. Any orbits that decay into the planetoid have their mass added to it. Mass is conserved in this simulation.
 
 Building and Running
 --------------------
@@ -150,7 +171,7 @@ The default make task will store build output in the following locations for eac
 - `dist/omp-results`
 - `dist/cuda-results`
 
-The directories will be populated with csv files representing time steps within the simulation
+The directories will be populated with csv files representing time steps within the simulation.
 
 These output files are merged by `render.py` into nice animated GIFs by the build process.
 
@@ -169,7 +190,7 @@ GPU         NVidia P3200          14 Shader Modules, 1792 Shader Units, 6 GB RAM
 Sequential Implementation
 -------------------------
 
-I began this project by creating a simply sequential program to implement this simulation. Using the configured parameters, it runs in about 120 seconds on my system. Using that code as a starting point, I began the process of converting and opimizing it to make better use of the resources of a modern paralell computer.
+I began this project by creating a sequential program to implement this simulation. Using the configured parameters, it runs in about 120 seconds on my system. Using that code as a starting point, I began the process of converting and opimizing it to make better use of the resources of a modern paralell computer.
 
 The sequential implementation can be found in `src/seq.c` and the core is something like this:
 
@@ -181,6 +202,8 @@ for (i = 1; i < N; i++)
 for (j = 0; j < N; j++)
   bodies[i].position += bodies[i].velocity * delta_time;
 ```
+
+The actual code is a bit more complex than that, as it includes a number of optimizations and handles collision detection, but this demonstrates the core of the algorithm.
 
 OpenMP
 ------
@@ -366,7 +389,7 @@ Appendix A - Project Deliverables
 - Part 2 
     - Source Code - Located in the `src` directory or on [Github](https://github.com/jncraton/csc718-final-project/tree/master/src)
     - Final Report - This document
-    - Presentation slides - available [here](slides.html)
+    - Presentation slides - See [slides.html](slides.html). Note that this presentation uses a 2D grid of slides. Slides can be both next to one another or under one another. Navigation uses the arrow keys. ESC can be used to see the whole grid. This is just reveal.js if you've worked with it before.
 
 References
 ==========

@@ -33,12 +33,15 @@ Pseudocode
 ----------
 
 ```c
-for (i = 1; i < N; i++)
-  for (j = 0; j < N; j++)
+for (i = 1; i < N; i++) {
+  for (j = 0; j < N; j++) {
       bodies[i].velocity += {Acceleration from bodies[j]};
+  }
+}
 
-for (j = 0; j < N; j++)
+for (j = 0; j < N; j++) {
   bodies[i].position += bodies[i].velocity * delta_time;
+}
 ```
 
 Test Hardware
@@ -68,9 +71,11 @@ Psuedocode
 
 ```c
 #pragma omp parallel for private(j)
-for (i = 1; i < N; i++)
-  for (j = 0; j < N; j++)
-      bodies[i].velocity += {Acceleration from bodies[j]};
+for (i = 1; i < N; i++) {
+  for (j = 0; j < N; j++) {
+    bodies[i].velocity += {Acceleration from bodies[j]};
+  }
+}
 ```
 
 Performance
@@ -93,9 +98,10 @@ Pseudocode
 
 ```c
 __global__ void update_from_gravity (Body * bodies, int * N) {
-  int i = blockIdx.x + 1;
-  int j = blockIdx.y * blockDim.y + threadIdx.x;
-  bodies[i].velocity += {Acceleration from bodies[j]};
+    int i = blockIdx.x + 1;
+    int j = blockIdx.y * blockDim.y + threadIdx.x;
+    bodies[i].velocity += {Acceleration from bodies[j]};
+}
 ```
 
 Performance
