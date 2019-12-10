@@ -11,7 +11,7 @@ int main() {
     bodies[i].radius = get_radius(bodies[i].mass);
     bodies[i].dx = 8000 + 1000*(((fptype)rand() / (fptype)(RAND_MAX))-0.5);
     bodies[i].dy = -4000 + 8000 *(((fptype)rand() / (fptype)(RAND_MAX))-0.5);
-    bodies[i].dz = 4000 * (((fptype)rand() / (fptype)(RAND_MAX)));
+    bodies[i].dz = 1000 * (((fptype)rand() / (fptype)(RAND_MAX)));
     bodies[i].x = 20000 *(((fptype)rand() / (fptype)(RAND_MAX))-0.5);
     bodies[i].y = -earth_radius - 1E6 * ((fptype)rand() / (fptype)(RAND_MAX));
     bodies[i].z = 20000 *(((fptype)rand() / (fptype)(RAND_MAX))-0.5);
