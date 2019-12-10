@@ -105,3 +105,16 @@ Performance
 - Executes in 3.8 seconds
 - Nearly 32x improvement over sequential algorithm
 - Over 8x improvement over OpenMP algorithm
+
+Performance Comparison
+======================
+
+---
+
+Implementation                Runtime   Speedup
+----------------------------  --------- -------
+Sequential                    120 s     1x
+OpenMP                        31 s      3.8x
+CUDA (1 thread per block)     36 s      3.3x
+CUDA (128 threads per block)  5.1 s     23.5x
+CUDA (no explicit loops)      3.8 s     31.5x
