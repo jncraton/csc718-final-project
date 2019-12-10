@@ -326,7 +326,7 @@ This improves our runtime to 3.8 seconds.
 
 ### Additional Improvements
 
-While I was happy to handily outperform all of my CPU cores with CUDA, I believe that there may still be room for improvement. This problem is tricky to optimize for several reasons:
+While I was happy to handily outperform my CPU cores with CUDA, I believe that there may still be room for improvement. This problem is tricky to optimize for several reasons:
 
 1. N decreases as the simulation progresses, so it is not possible preselect values to optimally consume GPU resources.
 2. A branch is required when searching to handle collision detection. This shouldn't be a massive hit, as it should be an easy branch to predict, but it does still come at some cost.
@@ -354,6 +354,15 @@ Final Thoughts
 This project provided a great platform for me to learn about parallel computing. The problem I explored had obvious sections that could be improved via parallelism, but it was also challenging to optimize those gains due to a dynamic N and a few required branches.
 
 I feel confident that I could use CUDA or other GPU programming environments to create optimized algorithms in the future.
+
+Appendix A - Project Deliverables
+=================================
+
+- Part 1 Report - The first section of this document
+- Part 2 
+    - Source Code - Located in the `src` directory
+    - Final Report - This document
+    - Presentation slides - available [here](slides.html)
 
 References
 ==========
