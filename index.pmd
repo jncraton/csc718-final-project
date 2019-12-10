@@ -20,7 +20,7 @@ Importance of GPU Programming
 
 GPU programming has become critical in certain industries. Any application which can execute a large number of calculations in parallel will likely see significantly improved performance when executed on a GPU [4]. Problems such as physics simulations, finite element modeling, machine learning, video encoding, and many others all benefit dramatically from the sort of parallelism available on a modern GPU.
 
-Single-threaded performance is still very important for common computing tasks. Many daily tasks can't be easily paralellized, or it would significantly more complicated to do so. For this reason, the CPUs in modern devices have found a balance that tries to maximize single-threaded efficiency while also providing additional cores, SIMD instructions, and multiple threads per core for workloads that can be run in parallel.
+Single-threaded performance is still very important for common computing tasks. Many daily tasks can't be easily parallelized, or it would significantly more complicated to do so. For this reason, the CPUs in modern devices have found a balance that tries to maximize single-threaded efficiency while also providing additional cores, SIMD instructions, and multiple threads per core for workloads that can be run in parallel.
 
 Unfortunately, we are hitting many challenges in improving single threaded performance. Increasing CPU clocks requires additional power. This power is expressed as heat and must be dissipated in order to avoid damaging the CPU. This places a hard limit on how fast our chips can run. In addition, it is becoming more difficult to shrink transistors, thus placing constraints on the level of advanced designs that we can implement in silicon. In short, we are at the stage of diminishing returns on single-threaded CPU performance [5].
 
@@ -94,7 +94,7 @@ A GPU has memory that is physically separate from the rest of the system RAM. Da
 
 Since CUDA 6.0, NVIDIA has provided a Unified Memory model that allows a single block of RAM to be shared between the host and device. This model handles the complexity of transferring data between GPU and CPU RAM and allows for a single logically shared address space to be used. This greatly simplifies programming and make it much simpler to port code between CUDA environments and non-CUDA environments.
 
-This shared memory model is one of the significant advantages of CUDA programming. Its primary limitation is that it is only usable on NVIDIA GPUs, as it is a proprietary framework developed and provided by NVIDIA. Overall, CUDA programming provides an effective and relatively straigtforward way for programmers to write code that can execute in parallel on an NVIDIA GPU.
+This shared memory model is one of the significant advantages of CUDA programming. Its primary limitation is that it is only usable on NVIDIA GPUs, as it is a proprietary framework developed and provided by NVIDIA. Overall, CUDA programming provides an effective and relatively straightforward way for programmers to write code that can execute in parallel on an NVIDIA GPU.
 
 Programming Project
 ===================
@@ -102,7 +102,7 @@ Programming Project
 Introduction
 ------------
 
-I've chosen to explore building and optimizing an n-body physics simulator. The particular problem I've chosen to explore is the creation of moons due to asteroid impact. I have neither the expertise nor compute time available to really do this properly, but this project gave me away to explore paralell computing concept in a fun environment.
+I've chosen to explore building and optimizing an n-body physics simulator. The particular problem I've chosen to explore is the creation of moons due to asteroid impact. I have neither the expertise nor compute time available to really do this properly, but this project gave me away to explore parallel computing concept in a fun environment.
 
 Wikipedia describes N-body simulation as:
 
@@ -112,12 +112,12 @@ Research Question
 -----------------
 
 - In October, [we discovered 20 new moons of Saturn](http://www.astronomy.com/news/2019/10/20-new-moons-discovered-orbiting-saturn).
-- How does a large body disintigrating on impact with another large body form moons or ring systems around a planetoid?
+- How does a large body disintegrating on impact with another large body form moons or ring systems around a planetoid?
 
 Algorithm
 ---------
 
-We begin by creating many (N) bodies with initial condition suitable for the physical process we want to study. We then iterativly update these bodies to simulate their motion. The steps for the update process are:
+We begin by creating many (N) bodies with initial condition suitable for the physical process we want to study. We then iteratively update these bodies to simulate their motion. The steps for the update process are:
 
 1. Apply gravitational force to each body from every other body - O(N^2)
 2. Search for collisions and merge objects - O(N^2)
@@ -190,7 +190,7 @@ GPU         NVidia P3200          14 Shader Modules, 1792 Shader Units, 6 GB RAM
 Sequential Implementation
 -------------------------
 
-I began this project by creating a sequential program to implement this simulation. Using the configured parameters, it runs in about 120 seconds on my system. Using that code as a starting point, I began the process of converting and opimizing it to make better use of the resources of a modern paralell computer.
+I began this project by creating a sequential program to implement this simulation. Using the configured parameters, it runs in about 120 seconds on my system. Using that code as a starting point, I began the process of converting and optimizing it to make better use of the resources of a modern parallel computer.
 
 The sequential implementation can be found in `src/seq.c` and the core is something like this:
 
@@ -224,7 +224,7 @@ This implementation took only a few minutes to get up and running and really sho
 CUDA
 ----
 
-The bulk of my work in this project involved learning CUDA and adjusting my program to appropraiately make use of the GPU.
+The bulk of my work in this project involved learning CUDA and adjusting my program to appropriately make use of the GPU.
 
 ### Proof of Concept
 
@@ -358,12 +358,12 @@ While I was happy to handily outperform my CPU cores with CUDA, I believe that t
 1. N decreases as the simulation progresses, so it is not possible preselect values to optimally consume GPU resources.
 2. A branch is required when searching to handle collision detection. This shouldn't be a massive hit, as it should be an easy branch to predict, but it does still come at some cost.
 
-My current implementation also has one additional branch to ensure that we aren't comparing objects to themselves. It would be lovely if this could be removed. I also currently make use of atomic operations. It is possible that there is a way to order operations and perform syncronization to eliminate these.
+My current implementation also has one additional branch to ensure that we aren't comparing objects to themselves. It would be lovely if this could be removed. I also currently make use of atomic operations. It is possible that there is a way to order operations and perform synchronization to eliminate these.
 
 Performance Comparison
 ----------------------
 
-Here's a summary of the performance of these implenetations:
+Here's a summary of the performance of these implementations:
 
 Implementation                Runtime   Speedup
 ----------------------------  --------- -------
